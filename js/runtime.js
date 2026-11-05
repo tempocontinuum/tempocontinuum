@@ -88,6 +88,7 @@
     var frag = document.createDocumentFragment();
     molde.content.childNodes.forEach(function (f) { montar(f, vals, frag); });
     raiz.replaceChildren(frag);
+    try { var f = raiz.firstElementChild; if (f) document.body.style.background = getComputedStyle(f).backgroundColor; } catch (e) {}
     if (idFoco) {
       var alvo = document.getElementById(idFoco);
       if (alvo && alvo !== document.body) {
