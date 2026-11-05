@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempo Continuum — Ficha de Jones Manoel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:"Gotham Medium","Gotham","GothamMedium","Montserrat","Helvetica Neue",Arial,sans-serif;font-weight:500}
+h1,h2,h3,h4,p,th,dt,dd{font-weight:500}
+a{color:inherit}a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+</style>
+<style>html,body{margin:0} #app > div{min-height:100vh}</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+
+<div style="background: {{c.bg}}; color: {{c.ink}}; min-height: 100%; font-family: &quot;Gotham Medium&quot;, &quot;Gotham&quot;, &quot;Montserrat&quot;, Arial, sans-serif; font-weight: 500;">
+
+  <header style="background: {{c.bg}}; color: {{c.ink}}; border-bottom: 2px solid {{c.ink}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" aria-label="Tempo Continuum, início">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><img src="logos/logo-claro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if><sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><img src="logos/logo-escuro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if>
+        <span style="font-size: 13px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase;">Tempo<br>Continuum</span>
+      </a>
+      <nav aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 6px 8px; flex: 1 1 560px; font-size: 15px;">
+        <a href="noticias.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Notícias</a>
+        <a href="politicos.html" aria-current="page" style="text-decoration: none; padding: 8px 14px; border-radius: 999px; background: #8EA612; color: #060308;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Ferramentas</a>
+      </nav>
+      <a href="noticias.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; border: 2px solid {{c.ink}}; border-radius: 999px; padding: 8px 16px; font-size: 14px; min-height: 44px; box-sizing: border-box;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      <button type="button" onClick="{{alternarTema}}" aria-label="{{temaLabel}}" style="display: flex; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: {{c.ink}}; color: {{c.bg}}; border-radius: 999px; padding: 8px 16px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        {{temaTexto}}
+      </button>
+    </div>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 36px;">
+    <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / <a href="politicos.html" style="text-underline-offset: 3px;">Políticos</a> / Jones Manoel</p>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px 32px;">
+      <div aria-hidden="true" style="width: 128px; height: 128px; border-radius: 50%; background: #8EA612; color: #060308; border: 2px solid #060308; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; flex: none;">JM</div>
+      <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Ficha de ator político</p>
+        <h1 style="margin: 0; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em;"><span style="background: #8EA612; color: #060308; padding: 0 10px;">Jones Manoel</span></h1>
+        <p style="margin: 0; font-size: 1.15rem;">Deputado federal eleito por Pernambuco · PSOL</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">
+          <span style="background: #8EA612; color: #060308; padding: 4px 10px;">Eleito em 2026</span>
+          <span style="border: 1.5px solid {{c.ink}}; padding: 3px 10px;">Mandato 2027–2031</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; border-top: 2px solid {{c.ink}}; padding-top: 28px;">
+      <aside style="flex: 1 1 300px; min-width: 0; background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 22px;">
+        <h2 style="margin: 0 0 14px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Dados</h2>
+        <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; font-size: 0.92rem;">
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Nome completo</dt><dd style="margin: 2px 0 0;">Jones Manoel da Silva</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Nascimento</dt><dd style="margin: 2px 0 0;">9 de janeiro de 1990</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Naturalidade</dt><dd style="margin: 2px 0 0;">Recife (PE)</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Formação</dt><dd style="margin: 2px 0 0;">Licenciatura em História e mestrado em Serviço Social, ambos pela UFPE</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Profissão</dt><dd style="margin: 2px 0 0;">Historiador, professor, escritor e comunicador</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Partido atual</dt><dd style="margin: 2px 0 0;">PSOL</dd></div>
+          <div><dt style="font-size: 12px; color: {{c.muted}};">Cargo</dt><dd style="margin: 2px 0 0;">Deputado federal eleito (posse em fevereiro de 2027)</dd></div>
+        </dl>
+      </aside>
+
+      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px;">
+        <section style="display: flex; flex-direction: column; gap: 10px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Resumo</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Historiador, professor e escritor pernambucano, conhecido pelo canal no YouTube sobre marxismo e história, mantido desde 2017. Militou no Partido Comunista Brasileiro (PCB) de 2011 até ser expulso pelo Comitê Central, em 2023. Em 2026 foi eleito deputado federal pelo PSOL, com 249.077 votos, a segunda maior votação de Pernambuco.</p>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Trajetória</h2>
+          <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2011</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Começa o curso de História na UFPE e a militância no PCB.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2013</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Passa a militar na União da Juventude Comunista (UJC), juventude do PCB.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2017</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Cria o canal no YouTube.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2020</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Estreia coluna em vídeo no canal da CartaCapital.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2022</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Candidato a governador de Pernambuco pelo PCB.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">jul. 2023</span><span style="flex: 1; min-width: 0; line-height: 1.5;">É expulso do PCB por decisão da maioria do Comitê Central, junto com outros quatro membros.</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">jun. 2024</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Os expulsos realizam um congresso extraordinário; o grupo passa a se chamar Partido Comunista Brasileiro Revolucionário (PCBR).</span></li>
+            <li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}}; border-bottom: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">2026</span><span style="flex: 1; min-width: 0; line-height: 1.5;">Eleito deputado federal pelo PSOL.</span></li>
+          </ol>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Eleições</h2>
+          <div style="overflow-x: auto;">
+            <table style="border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.92rem; font-variant-numeric: tabular-nums;">
+              <thead><tr>
+                <th style="text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Ano</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Cargo</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Partido</th>
+                <th style="text-align: right; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Votos</th>
+                <th style="text-align: left; padding: 10px 0 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Resultado</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}};">2022</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}};">Governador (PE)</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}};">PCB</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}}; text-align: right;">33.931 (0,69%)</td>
+                  <td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}};">Não eleito · 6º lugar</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}};">2026</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}};">Deputado federal (PE)</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}};">PSOL</td>
+                  <td style="padding: 12px; border-bottom: 1px solid {{c.line}}; text-align: right;">249.077</td>
+                  <td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}};"><span style="background: #8EA612; color: #060308; padding: 2px 8px;">Eleito</span> · 2º do estado, 29º do país</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Atuação e obras</h2>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; max-width: 66ch;">
+            <li>Canal no YouTube sobre marxismo, história e política, criado em 2017.</li>
+            <li>Participa do podcast Revolushow e dirige, com Gabriel Landi, a coleção “Quebrando as Correntes”, da editora Autonomia Literária.</li>
+            <li>Ajudou a criar o curso popular Novo Caminho, preparatório para o ensino público.</li>
+            <li>Livros: <i>Revolução Africana</i> (2019, org.), <i>Raça, classe e revolução</i> (2020), <i>Colonialismo e luta anticolonial</i> (2020, com Domenico Losurdo), <i>A outra Rosa</i> (2021), <i>Marxismo, psicanálise, revolução</i> (2022), <i>Pátria socialista ou morte</i> (2023), <i>A negação do Brasil negro</i> (2024) e <i>Cinismo e a morte da esquerda brasileira</i> (2024, com Heribaldo Maia).</li>
+          </ul>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Posições declaradas</h2>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; max-width: 66ch;">
+            <li>Declara-se comunista e marxista, com ênfase no marxismo anticolonial e na defesa da “Revolução Brasileira”.</li>
+            <li>Diz não ser “petista nem lulista”.</li>
+            <li>No segundo turno presidencial de 2026, declarou apoio a Lula, mantendo críticas à gestão do PT (“houve erros graves”).</li>
+          </ul>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Controvérsias e processos</h2>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; max-width: 66ch;">
+            <li><b>Dez. 2020:</b> relatório do governo federal o classificou como “detrator” e “crítico contundente do governo Bolsonaro” e recomendou monitorar suas publicações.</li>
+            <li><b>Jul. 2021:</b> uma publicação do então secretário especial de Cultura, Mário Frias, sobre Jones foi apontada como racista e removida pelo Twitter.</li>
+            <li>Não há processos judiciais contra ele registrados nas fontes consultadas.</li>
+          </ul>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 20px;">
+          <h2 style="margin: 0; font-size: 1.1rem;">Fontes</h2>
+          <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.88rem; line-height: 1.5; color: {{c.muted}};">
+            <li><a href="https://pt.wikipedia.org/wiki/Jones_Manoel">Jones Manoel — Wikipédia</a></li>
+            <li><a href="https://movimentoeconomico.com.br/politica/eleicoes-2026/2026/10/05/de-pedro-campos-a-dani-portela-veja-deputados-federais-e-estaduais-eleitos-em-pe/">Deputados federais e estaduais eleitos em PE — Movimento Econômico, 5 out. 2026</a></li>
+            <li><a href="https://www.diariodepernambuco.com.br/politica/2026/10/11725873-pernambucanos-pedro-campos-e-jones-manoel-estao-entre-os-50-deputados-mais-votados-do-pais.html">Pedro Campos e Jones Manoel entre os 50 mais votados do país — Diario de Pernambuco, out. 2026</a></li>
+            <li><a href="https://www.diariodepernambuco.com.br/politica/2026/10/11725894-jones-manoel-apoia-lula-contra-flavio-mas-mantem-criticas-a-gestao-do-pt-houve-erros-graves.html">Jones Manoel apoia Lula, mas mantém críticas à gestão do PT — Diario de Pernambuco, out. 2026</a></li>
+            <li><a href="https://istoe.com.br/nao-sou-petista-nem-lulista-jones-manoel-projeta-candidatura-nas-eleicoes-de-2026">“Não sou petista nem lulista” — IstoÉ</a></li>
+          </ul>
+          <p style="margin: 0; font-size: 0.82rem; color: {{c.muted}};">Ficha atualizada em 2 de novembro de 2026.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 48px 24px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Tempo Continuum</p>
+        <p style="margin: 0; font-size: 1.4rem; line-height: 1.25; max-width: 24ch;"><span style="background: #8EA612; color: #060308; padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Conhecer o passado. Organizar o presente. Construir o futuro.</span></p>
+      </div>
+      <nav aria-label="Rodapé" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 40px; font-size: 14px; align-content: start;">
+        <a href="noticias.html" style="text-decoration: none;">Notícias</a>
+        <a href="dossies.html" style="text-decoration: none;">Dossiês</a>
+        <a href="politicos.html" style="text-decoration: none;">Políticos</a>
+        <a href="cursos.html" style="text-decoration: none;">Cursos</a>
+        <a href="casos.html" style="text-decoration: none;">Casos</a>
+        <a href="index.html" style="text-decoration: none;">Início</a>
+        <a href="documentarios.html" style="text-decoration: none;">Documentários</a>
+        <a href="ferramentas.html" style="text-decoration: none;">Ferramentas</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</template>
+<script src="js/runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { escuro: null };
+  }
+  componentDidMount() {
+    try {
+      var v = window.localStorage.getItem('tc-tema');
+      if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
+    } catch (e) {}
+  }
+  renderVals() {
+    var escuro = (this.state && this.state.escuro !== null && this.state.escuro !== undefined)
+      ? this.state.escuro
+      : (this.props.tema ?? 'claro') === 'escuro';
+    var self = this;
+    var c = escuro
+      ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
+      : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    return {
+      c: c,
+      escuro: escuro,
+      claro: !escuro,
+      temaTexto: escuro ? 'Claro' : 'Escuro',
+      temaLabel: escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro',
+      alternarTema: function () {
+        var novo = !escuro;
+        self.setState({ escuro: novo });
+        try { window.localStorage.setItem('tc-tema', novo ? 'escuro' : 'claro'); } catch (e) {}
+      }
+    };
+  }
+}
+iniciarPagina(Component, {"tema": "claro"});
+</script>
+</body>
+</html>

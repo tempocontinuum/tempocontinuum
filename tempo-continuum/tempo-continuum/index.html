@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempo Continuum — Home</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:"Gotham Medium","Gotham","GothamMedium","Montserrat","Helvetica Neue",Arial,sans-serif;font-weight:500}
+h1,h2,h3,h4,p{font-weight:500}
+a{color:inherit}a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+</style>
+<style>html,body{margin:0} #app > div{min-height:100vh}</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+
+<div style="background: {{c.bg}}; color: {{c.ink}}; min-height: 100%; font-family: &quot;Gotham Medium&quot;, &quot;Gotham&quot;, &quot;Montserrat&quot;, Arial, sans-serif; font-weight: 500;">
+
+  <header style="background: {{c.bg}}; color: {{c.ink}}; border-bottom: 2px solid {{c.ink}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px;">
+      <a href="index.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" aria-label="Tempo Continuum, início">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><img src="logos/logo-claro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if><sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><img src="logos/logo-escuro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if>
+        <span style="font-size: 13px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase;">Tempo<br>Continuum</span>
+      </a>
+      <nav aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 6px 8px; flex: 1 1 560px; font-size: 15px;">
+        <a href="noticias.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Notícias</a>
+        <a href="politicos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Ferramentas</a>
+      </nav>
+      <a href="noticias.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; border: 2px solid {{c.ink}}; border-radius: 999px; padding: 8px 16px; font-size: 14px; min-height: 44px; box-sizing: border-box;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        Buscar
+      </a>
+      <button type="button" onClick="{{alternarTema}}" aria-label="{{temaLabel}}" style="display: flex; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: {{c.ink}}; color: {{c.bg}}; border-radius: 999px; padding: 8px 16px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        {{temaTexto}}
+      </button>
+    </div>
+  </header>
+
+  <main id="topo" style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 80px; display: flex; flex-direction: column; gap: 80px;">
+
+    <section aria-label="Destaques" style="display: flex; flex-wrap: wrap; gap: 40px;">
+      <article style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+        <div style="aspect-ratio: 16 / 9; max-width: 100%; background: {{c.surface}}; border: 1px solid {{c.line}}; display: flex; align-items: flex-end; padding: 16px; box-sizing: border-box; color: {{c.muted}}; font-size: 13px;">[Foto da matéria principal]</div>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">
+          <span style="background: #8EA612; color: #060308; padding: 3px 10px;">Formação</span>
+          <span style="color: {{c.muted}};">[Data] · [Tempo de leitura]</span>
+        </div>
+        <h1 style="margin: 0; font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance;">[Manchete principal do dia, em uma ou duas linhas]</h1>
+        <p style="margin: 0; font-size: 1.15rem; line-height: 1.55; color: {{c.muted}}; max-width: 62ch;">[Linha fina: uma ou duas frases que contam ao leitor o que está em jogo e por que a matéria importa.]</p>
+      </article>
+
+      <aside style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 0;">
+        <p style="margin: 0 0 4px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Também em destaque</p>
+        <article style="border-top: 2px solid {{c.ink}}; padding: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Casos</span>
+          <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título da segunda matéria em destaque]</h3>
+        </article>
+        <article style="border-top: 1px solid {{c.line}}; padding: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Políticos</span>
+          <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título da terceira matéria em destaque]</h3>
+        </article>
+        <article style="border-top: 1px solid {{c.line}}; padding: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Dossiês</span>
+          <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título da quarta matéria em destaque]</h3>
+        </article>
+
+        <form id="busca" style="margin-top: 12px; background: {{c.surface}}; color: {{c.ink}}; border: 2px solid {{c.ink}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <label for="q" style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Pesquise o acervo</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="q" type="search" value="{{busca}}" onChange="{{onBusca}}" placeholder="Palavra, nome ou tag" autocomplete="off" style="flex: 1; min-width: 0; font: inherit; font-size: 15px; padding: 10px 12px; border: 2px solid {{c.ink}}; background: {{c.bg}}; color: {{c.ink}}; border-radius: 0;">
+            <a href="noticias.html" onClick="{{buscar}}" style="display: flex; align-items: center; text-decoration: none; font-size: 14px; padding: 10px 16px; background: #8EA612; color: #060308; min-height: 44px; box-sizing: border-box;">Buscar</a>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px;">
+            <a href="noticias.html" onClick="{{tagMarxismo}}" style="text-decoration: none; border: 1.5px solid {{c.ink}}; padding: 4px 10px; border-radius: 999px;">marxismo</a>
+            <a href="noticias.html" onClick="{{tagTrabalho}}" style="text-decoration: none; border: 1.5px solid {{c.ink}}; padding: 4px 10px; border-radius: 999px;">trabalho</a>
+            <a href="noticias.html" onClick="{{tagHistoria}}" style="text-decoration: none; border: 1.5px solid {{c.ink}}; padding: 4px 10px; border-radius: 999px;">história do Brasil</a>
+            <a href="noticias.html" onClick="{{tagReforma}}" style="text-decoration: none; border: 1.5px solid {{c.ink}}; padding: 4px 10px; border-radius: 999px;">reforma agrária</a>
+          </div>
+        </form>
+      </aside>
+    </section>
+
+    <section id="noticias" aria-labelledby="h-noticias" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <h2 id="h-noticias" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Notícias</span></h2>
+        <a href="noticias.html" style="font-size: 14px; text-underline-offset: 4px;">Todas as notícias</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px 28px;">
+        <article style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}};"></div>
+          <span style="font-size: 12px; color: {{c.muted}};">[Data] · trabalho</span>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título da notícia]</h3>
+          <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; color: {{c.muted}};">[Linha fina da notícia em uma frase.]</p>
+        </article>
+        <article style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}};"></div>
+          <span style="font-size: 12px; color: {{c.muted}};">[Data] · movimentos sociais</span>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título da notícia]</h3>
+          <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; color: {{c.muted}};">[Linha fina da notícia em uma frase.]</p>
+        </article>
+        <article style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}};"></div>
+          <span style="font-size: 12px; color: {{c.muted}};">[Data] · economia</span>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título da notícia]</h3>
+          <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; color: {{c.muted}};">[Linha fina da notícia em uma frase.]</p>
+        </article>
+        <article style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}};"></div>
+          <span style="font-size: 12px; color: {{c.muted}};">[Data] · história do Brasil</span>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título da notícia]</h3>
+          <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; color: {{c.muted}};">[Linha fina da notícia em uma frase.]</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="politicos" aria-labelledby="h-politicos" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 id="h-politicos" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Políticos</span></h2>
+          <p style="margin: 0; font-size: 0.95rem; color: {{c.muted}};">Perfis com votações, declarações e os casos em que cada um aparece.</p>
+        </div>
+        <a href="politicos.html" style="font-size: 14px; text-underline-offset: 4px;">Todos os perfis</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px;">
+        <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: {{c.line}};"></div>
+          <h3 style="margin: 0; font-size: 1.1rem;">[Nome do político]</h3>
+          <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
+          <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
+          <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
+        </article>
+        <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: {{c.line}};"></div>
+          <h3 style="margin: 0; font-size: 1.1rem;">[Nome do político]</h3>
+          <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
+          <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
+          <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
+        </article>
+        <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: {{c.line}};"></div>
+          <h3 style="margin: 0; font-size: 1.1rem;">[Nome do político]</h3>
+          <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
+          <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
+          <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
+        </article>
+        <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: {{c.line}};"></div>
+          <h3 style="margin: 0; font-size: 1.1rem;">[Nome do político]</h3>
+          <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
+          <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
+          <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="casos" aria-labelledby="h-casos" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 id="h-casos" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Casos</span></h2>
+          <p style="margin: 0; font-size: 0.95rem; color: {{c.muted}};">Investigações acompanhadas do início ao fim, com linha do tempo e documentos.</p>
+        </div>
+        <a href="casos.html" style="font-size: 14px; text-underline-offset: 4px;">Todos os casos</a>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <article style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 20px 0; border-bottom: 1px solid {{c.line}};">
+          <span style="flex: none; width: 132px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; border: 1.5px solid {{c.ink}}; padding: 5px 10px; text-align: center; box-sizing: border-box;">Em andamento</span>
+          <h3 style="margin: 0; font-size: 1.25rem; flex: 1 1 380px; min-width: 0;">[Título do caso]</h3>
+          <span style="font-size: 13px; color: {{c.muted}};">Atualizado em [data]</span>
+        </article>
+        <article style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 20px 0; border-bottom: 1px solid {{c.line}};">
+          <span style="flex: none; width: 132px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; background: #8EA612; color: #060308; border: 1.5px solid #8EA612; padding: 5px 10px; text-align: center; box-sizing: border-box;">Em julgamento</span>
+          <h3 style="margin: 0; font-size: 1.25rem; flex: 1 1 380px; min-width: 0;">[Título do caso]</h3>
+          <span style="font-size: 13px; color: {{c.muted}};">Atualizado em [data]</span>
+        </article>
+        <article style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 20px 0; border-bottom: 1px solid {{c.line}};">
+          <span style="flex: none; width: 132px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; border: 1.5px dashed {{c.muted}}; color: {{c.muted}}; padding: 5px 10px; text-align: center; box-sizing: border-box;">Encerrado</span>
+          <h3 style="margin: 0; font-size: 1.25rem; flex: 1 1 380px; min-width: 0;">[Título do caso]</h3>
+          <span style="font-size: 13px; color: {{c.muted}};">Atualizado em [data]</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="documentarios" aria-labelledby="h-docs" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <h2 id="h-docs" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Documentários</span></h2>
+        <a href="documentarios.html" style="font-size: 14px; text-underline-offset: 4px;">Todos os documentários</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px;">
+        <article style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="aspect-ratio: 16 / 9; background: #060308; position: relative; display: flex; align-items: center; justify-content: center;">
+            <span style="width: 56px; height: 56px; border-radius: 50%; background: #8EA612; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#060308" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span>
+            <span style="position: absolute; right: 10px; bottom: 10px; background: #F2EEE9; color: #060308; font-size: 12px; padding: 2px 8px;">[00:00]</span>
+          </div>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título do documentário]</h3>
+          <p style="margin: 0; font-size: 0.9rem; color: {{c.muted}};">[Uma frase sobre o tema do filme.]</p>
+        </article>
+        <article style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="aspect-ratio: 16 / 9; background: #060308; position: relative; display: flex; align-items: center; justify-content: center;">
+            <span style="width: 56px; height: 56px; border-radius: 50%; background: #8EA612; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#060308" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span>
+            <span style="position: absolute; right: 10px; bottom: 10px; background: #F2EEE9; color: #060308; font-size: 12px; padding: 2px 8px;">[00:00]</span>
+          </div>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título do documentário]</h3>
+          <p style="margin: 0; font-size: 0.9rem; color: {{c.muted}};">[Uma frase sobre o tema do filme.]</p>
+        </article>
+        <article style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="aspect-ratio: 16 / 9; background: #060308; position: relative; display: flex; align-items: center; justify-content: center;">
+            <span style="width: 56px; height: 56px; border-radius: 50%; background: #8EA612; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#060308" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span>
+            <span style="position: absolute; right: 10px; bottom: 10px; background: #F2EEE9; color: #060308; font-size: 12px; padding: 2px 8px;">[00:00]</span>
+          </div>
+          <h3 style="margin: 0; font-size: 1.15rem; line-height: 1.3;">[Título do documentário]</h3>
+          <p style="margin: 0; font-size: 0.9rem; color: {{c.muted}};">[Uma frase sobre o tema do filme.]</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="dossies" aria-labelledby="h-dossies" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 id="h-dossies" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Dossiês</span></h2>
+          <p style="margin: 0; font-size: 0.95rem; color: {{c.muted}};">Reportagens longas que reúnem pesquisa, documentos e entrevistas sobre um tema.</p>
+        </div>
+        <a href="dossies.html" style="font-size: 14px; text-underline-offset: 4px;">Todos os dossiês</a>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 28px;">
+        <article style="flex: 999 1 520px; min-width: 0; background: #8EA612; color: #060308; padding: 32px; display: flex; flex-direction: column; gap: 14px; box-sizing: border-box;">
+          <span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Dossiê · [N] capítulos</span>
+          <h3 style="margin: 0; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.1; letter-spacing: -0.01em; text-wrap: balance;">[Título do dossiê em destaque]</h3>
+          <p style="margin: 0; font-size: 1rem; line-height: 1.55; max-width: 56ch;">[Duas frases que apresentam o dossiê: a pergunta que ele responde e o material que reúne.]</p>
+          <a href="#" style="align-self: flex-start; text-decoration: none; background: #060308; color: #F2EEE9; padding: 12px 20px; font-size: 14px; margin-top: 8px;">Ler o dossiê</a>
+        </article>
+        <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 0;">
+          <article style="border-top: 2px solid {{c.ink}}; padding: 18px 0; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 12px; color: {{c.muted}};">[N] capítulos</span>
+            <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título do dossiê]</h3>
+          </article>
+          <article style="border-top: 1px solid {{c.line}}; padding: 18px 0; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 12px; color: {{c.muted}};">[N] capítulos</span>
+            <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título do dossiê]</h3>
+          </article>
+          <article style="border-top: 1px solid {{c.line}}; border-bottom: 1px solid {{c.line}}; padding: 18px 0; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 12px; color: {{c.muted}};">[N] capítulos</span>
+            <h3 style="margin: 0; font-size: 1.2rem; line-height: 1.25;">[Título do dossiê]</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cursos" aria-labelledby="h-cursos" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h2 id="h-cursos" style="margin: 0; font-size: 2rem; letter-spacing: -0.01em;"><span style="background: #8EA612; color: #060308; padding: 0 8px;">Cursos</span></h2>
+          <p style="margin: 0; font-size: 0.95rem; color: {{c.muted}};">Formação política em módulos, para estudar no seu ritmo ou em grupo.</p>
+        </div>
+        <a href="cursos.html" style="font-size: 14px; text-underline-offset: 4px;">Todos os cursos</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px;">
+        <article style="border: 2px solid {{c.ink}}; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; color: {{c.muted}};">[N] aulas · [carga horária]</span>
+          <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.2;">Marxismo</h3>
+          <a href="#" style="margin-top: auto; text-decoration: none; align-self: flex-start; background: #8EA612; color: #060308; padding: 10px 16px; font-size: 14px;">Ver curso</a>
+        </article>
+        <article style="border: 2px solid {{c.ink}}; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; color: {{c.muted}};">[N] aulas · [carga horária]</span>
+          <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.2;">Socialismo</h3>
+          <a href="#" style="margin-top: auto; text-decoration: none; align-self: flex-start; background: #8EA612; color: #060308; padding: 10px 16px; font-size: 14px;">Ver curso</a>
+        </article>
+        <article style="border: 2px solid {{c.ink}}; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; color: {{c.muted}};">[N] aulas · [carga horária]</span>
+          <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.2;">Direitos dos trabalhadores</h3>
+          <a href="#" style="margin-top: auto; text-decoration: none; align-self: flex-start; background: #8EA612; color: #060308; padding: 10px 16px; font-size: 14px;">Ver curso</a>
+        </article>
+        <article style="border: 2px solid {{c.ink}}; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; color: {{c.muted}};">[N] aulas · [carga horária]</span>
+          <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.2;">Crítica do capitalismo</h3>
+          <a href="#" style="margin-top: auto; text-decoration: none; align-self: flex-start; background: #8EA612; color: #060308; padding: 10px 16px; font-size: 14px;">Ver curso</a>
+        </article>
+        <article style="border: 2px solid {{c.ink}}; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; color: {{c.muted}};">[N] aulas · [carga horária]</span>
+          <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.2;">Revolução Brasileira</h3>
+          <a href="#" style="margin-top: auto; text-decoration: none; align-self: flex-start; background: #8EA612; color: #060308; padding: 10px 16px; font-size: 14px;">Ver curso</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+        <p style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Tempo Continuum</p>
+        <p style="margin: 0; font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.2; max-width: 22ch;"><span style="background: #8EA612; color: #060308; padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Conhecer o passado. Organizar o presente. Construir o futuro.</span></p>
+        <p style="margin: 0; font-size: 0.9rem; color: #DED5CA; max-width: 48ch;">Formação política, consciência de classe e Revolução Brasileira.</p>
+      </div>
+      <nav aria-label="Rodapé" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 40px; font-size: 14px; align-content: start;">
+        <a href="noticias.html" style="text-decoration: none;">Notícias</a>
+        <a href="dossies.html" style="text-decoration: none;">Dossiês</a>
+        <a href="politicos.html" style="text-decoration: none;">Políticos</a>
+        <a href="cursos.html" style="text-decoration: none;">Cursos</a>
+        <a href="casos.html" style="text-decoration: none;">Casos</a>
+        <a href="#" style="text-decoration: none;">Quem somos</a>
+        <a href="documentarios.html" style="text-decoration: none;">Documentários</a>
+        <a href="ferramentas.html" style="text-decoration: none;">Ferramentas</a>
+        <a href="#" style="text-decoration: none;">Contato</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</template>
+<script src="js/runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { escuro: null };
+  }
+  componentDidMount() {
+    try {
+      var v = window.localStorage.getItem('tc-tema');
+      if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
+    } catch (e) {}
+  }
+  renderVals() {
+    var escuro = (this.state && this.state.escuro !== null && this.state.escuro !== undefined)
+      ? this.state.escuro
+      : (this.props.tema ?? 'claro') === 'escuro';
+    var self = this;
+    var c = escuro
+      ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
+      : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    var guardar = function (chave, valor) { try { if (valor) window.localStorage.setItem(chave, valor); } catch (e) {} };
+    var irTag = function (tag) { return function () { guardar('tc-busca-tag', tag); }; };
+    return {
+      busca: (this.state && this.state.busca) || '',
+      onBusca: function (e) { self.setState({ busca: e.target.value }); },
+      buscar: function () { guardar('tc-busca-q', ((self.state && self.state.busca) || '').trim()); },
+      tagMarxismo: irTag('marxismo'),
+      tagTrabalho: irTag('trabalho'),
+      tagHistoria: irTag('história do Brasil'),
+      tagReforma: irTag('reforma agrária'),
+      c: c,
+      escuro: escuro,
+      claro: !escuro,
+      temaTexto: escuro ? 'Claro' : 'Escuro',
+      temaLabel: escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro',
+      alternarTema: function () {
+        var novo = !escuro;
+        self.setState({ escuro: novo });
+        try { window.localStorage.setItem('tc-tema', novo ? 'escuro' : 'claro'); } catch (e) {}
+      }
+    };
+  }
+}
+iniciarPagina(Component, {"tema": "claro"});
+</script>
+</body>
+</html>
