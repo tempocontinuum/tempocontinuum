@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+# Configuração do editor de matérias (Sveltia CMS).
+# Guia da equipe: "Como lançar matérias no Tempo Continuum".
+
+backend:
+  name: github
+  repo: tempocontinuum/tempocontinuum
+  branch: main
+  # Login: cada pessoa entra com um token de acesso pessoal do GitHub.
+  # Para entrar com o botão "Entrar com GitHub", publique o autenticador
+  # (github.com/sveltia/sveltia-cms-auth) e descomente a linha abaixo:
+  # base_url: https://sveltia-cms-auth.SEU-SUBDOMINIO.workers.dev
+  commit_messages:
+    create: "Nova matéria: {{slug}}"
+    update: "Atualiza matéria: {{slug}}"
+    delete: "Remove matéria: {{slug}}"
+    uploadMedia: "Envia imagem: {{path}}"
+    deleteMedia: "Remove imagem: {{path}}"
+
+# Cada matéria vira um pull request e passa por Rascunho → Em revisão → Pronta.
+# Só vai para o site quando alguém clica em "Publicar".
+publish_mode: editorial_workflow
+
+site_url: https://tempocontinuum.github.io/tempocontinuum/
+logo:
+  src: /tempocontinuum/logos/logo-claro.png
+
+media_folder: imagens/materias
+public_folder: /imagens/materias
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  maxlength: 80
+
+collections:
+  - name: noticias
+    label: Notícias
+    label_singular: Matéria
+    description: 'Matérias publicadas na página Notícias e na Home do site.'
+    folder: conteudo/noticias
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: titulo
+    summary: "{{titulo}} · {{data | date('DD/MM/YYYY')}}"
+    sortable_fields:
+      fields: [data, titulo, editoria]
+      default:
+        field: data
+        direction: descending
+    preview_path: "materia.html?id={{slug}}"
+    fields:
+      - name: titulo
+        label: Título
+        widget: string
+        hint: 'Uma ou duas linhas, direto ao fato. Ex.: "Professores de Porto Serrano aprovam estado de greve".'
+        maxlength: 140
+      - name: linha
+        label: Linha fina
+        widget: text
+        hint: 'Uma ou duas frases que dizem o que está em jogo. Aparece abaixo do título e na lista de notícias.'
+        maxlength: 280
+      - name: data
+        label: Data de publicação
+        widget: datetime
+        default: "{{now}}"
+      - name: editoria
+        label: Editoria
+        widget: select
+        options: [Trabalho, Política, Economia, Cidades, Campo, Educação, Memória, Formação, Cultura, Internacional]
+      - name: tags
+        label: Tags
+        widget: list
+        hint: 'Palavras pelas quais a matéria será encontrada na busca. Uma por item, em minúsculas. Reaproveite as tags que já existem.'
+        min: 1
+        max: 8
+      - name: autor
+        label: Autoria
+        widget: string
+        default: Redação
+      - name: foto
+        label: Foto principal
+        widget: image
+        required: false
+        hint: 'Formato horizontal, de preferência com 1600 px de largura. Só use fotos que vocês podem publicar.'
+      - name: legenda
+        label: Legenda da foto
+        widget: string
+        required: false
+        hint: 'Descreva o que aparece na foto. Também é o texto lido por leitores de tela.'
+      - name: credito
+        label: Crédito da foto
+        widget: string
+        required: false
+        hint: 'Nome de quem fez a foto, ou a origem. Ex.: "Maria Souza / Tempo Continuum".'
+      - name: destaque
+        label: Manchete da Home
+        widget: boolean
+        default: false
+        hint: 'Ligue para esta matéria ser a manchete principal da Home. Se várias estiverem ligadas, vale a mais recente.'
+      - name: ficticio
+        label: Exemplo fictício
+        widget: boolean
+        default: false
+        hint: 'Só para matérias de demonstração. Mostra o selo "Exemplo fictício" no site.'
+      - name: corpo
+        label: Texto
+        widget: markdown
+        buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+        editor_components: [image]
+        hint: 'Use "Título 2" para os intertítulos. Parágrafos curtos, de 2 a 4 frases.'

@@ -79,7 +79,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
       <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / Notícias</p>
       <h1 style="margin: 0; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -0.02em;"><span style="background: #8EA612; color: #060308; padding: 0 10px;">Notícias</span></h1>
       <p style="margin: 0; font-size: 1.1rem; line-height: 1.55; color: {{c.muted}}; max-width: 60ch;">Tudo o que foi publicado, do mais recente ao mais antigo. Busque por palavra, marque uma ou mais tags ou limite o período.</p>
-      <p style="margin: 0; align-self: flex-start; font-size: 13px; border: 1.5px dashed {{c.muted}}; padding: 8px 12px; color: {{c.muted}};">As notícias abaixo são fictícias e servem só para demonstrar o site. Lugares, empresas e pessoas foram inventados.</p>
+      <sc-if value="{{temFicticio}}" hint-placeholder-val="{{true}}"><p style="margin: 0; align-self: flex-start; font-size: 13px; border: 1.5px dashed {{c.muted}}; padding: 8px 12px; color: {{c.muted}};">As notícias marcadas como “Exemplo fictício” são inventadas e servem só para demonstrar o site. Lugares, empresas e pessoas foram inventados.</p></sc-if>
     </div>
 
     <section id="busca" aria-label="Filtros" style="display: flex; flex-direction: column; gap: 16px; border-top: 2px solid {{c.ink}}; border-bottom: 1px solid {{c.line}}; padding: 20px 0;">
@@ -128,14 +128,14 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px 28px;">
       <sc-for list="{{itens}}" as="n" hint-placeholder-count="6">
         <article style="display: flex; flex-direction: column; gap: 10px;">
-          <div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}}; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-size: 12px; color: {{c.muted}};">[Foto]</div>
+          <sc-if value="{{n.temFoto}}" hint-placeholder-val="{{false}}"><a href="{{n.link}}" tabindex="-1" aria-hidden="true" style="display: block;"><img src="{{n.foto}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: 1px solid {{c.line}}; box-sizing: border-box;"></a></sc-if><sc-if value="{{n.semFoto}}" hint-placeholder-val="{{true}}"><div style="aspect-ratio: 3 / 2; background: {{c.surface}}; border: 1px solid {{c.line}}; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-size: 12px; color: {{c.muted}};">[Foto]</div></sc-if>
           <div style="display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 12px; color: {{c.muted}};">
             <span>{{n.dataTexto}}</span>
             <span>·</span>
             <span style="text-transform: uppercase; letter-spacing: 0.08em; color: {{c.ink}};">{{n.editoria}}</span>
-            <span style="border: 1px dashed {{c.muted}}; padding: 1px 6px;">Exemplo fictício</span>
+            <sc-if value="{{n.ficticio}}" hint-placeholder-val="{{true}}"><span style="border: 1px dashed {{c.muted}}; padding: 1px 6px;">Exemplo fictício</span></sc-if>
           </div>
-          <h2 style="margin: 0; font-size: 1.25rem; line-height: 1.25; text-wrap: balance;">{{n.titulo}}</h2>
+          <h2 style="margin: 0; font-size: 1.25rem; line-height: 1.25; text-wrap: balance;"><a href="{{n.link}}" style="text-decoration: none;">{{n.titulo}}</a></h2>
           <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; color: {{c.muted}};">{{n.linha}}</p>
           <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px;">
             <sc-for list="{{n.tags}}" as="t" hint-placeholder-count="3">
@@ -177,7 +177,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { escuro: null, q: '', tags: [], de: '', ate: '' };
+    this.state = { escuro: null, q: '', tags: [], de: '', ate: '', remoto: null };
   }
   componentDidMount() {
     try {
@@ -191,18 +191,21 @@ class Component extends DCLogic {
       if (q) { patch.q = q; ls.removeItem('tc-busca-q'); }
       this.setState(patch);
     } catch (e) {}
+    var self = this;
+    try {
+      fetch('dados/noticias.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (lista) { if (Array.isArray(lista)) self.setState({ remoto: lista }); })
+        .catch(function () {});
+    } catch (e) {}
+  }
+  exemplos() {
+    return [{"id": "2026-10-28-motoristas-de-aplicativo-de-santa-aurora-param-por-48-horas", "titulo": "Motoristas de aplicativo de Santa Aurora param por 48 horas", "linha": "A categoria reivindica tarifa mínima por corrida e explicação para os bloqueios de conta.", "data": "2026-10-28T09:00:00-03:00", "editoria": "Trabalho", "tags": ["trabalho", "greve", "plataformas"], "autor": "Redação", "foto": "", "destaque": true, "ficticio": true}, {"id": "2026-10-24-assentamento-terra-viva-colhe-a-primeira-safra-de-arroz-agro", "titulo": "Assentamento Terra Viva colhe a primeira safra de arroz agroecológico", "linha": "Depois de três anos de disputa judicial, as famílias vendem a produção em uma feira própria.", "data": "2026-10-24T09:00:00-03:00", "editoria": "Campo", "tags": ["reforma agrária", "agroecologia", "campo"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-10-21-professores-da-rede-municipal-de-porto-serrano-aprovam-estad", "titulo": "Professores da rede municipal de Porto Serrano aprovam estado de greve", "linha": "A assembleia pede reposição salarial e concurso para substituir os contratos temporários.", "data": "2026-10-21T09:00:00-03:00", "editoria": "Educação", "tags": ["trabalho", "educação", "greve"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-10-15-arquivo-de-vale-bonito-digitaliza-fichas-de-vigilancia-da-di", "titulo": "Arquivo de Vale Bonito digitaliza fichas de vigilância da ditadura", "linha": "O acervo ficará aberto à consulta pública a partir de dezembro.", "data": "2026-10-15T09:00:00-03:00", "editoria": "Memória", "tags": ["história do Brasil", "ditadura", "memória"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-10-09-camara-de-santa-aurora-debate-tarifa-zero-no-transporte-cole", "titulo": "Câmara de Santa Aurora debate tarifa zero no transporte coletivo", "linha": "O projeto prevê financiamento por uma taxa cobrada de grandes empregadores.", "data": "2026-10-09T09:00:00-03:00", "editoria": "Cidades", "tags": ["transporte", "cidades", "orçamento público"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-10-02-metalurgica-rio-claro-do-norte-anuncia-fechamento-de-unidade", "titulo": "Metalúrgica Rio Claro do Norte anuncia fechamento de unidade", "linha": "O sindicato tenta negociar a manutenção dos postos de trabalho.", "data": "2026-10-02T09:00:00-03:00", "editoria": "Trabalho", "tags": ["trabalho", "indústria", "sindicatos"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-09-26-grupo-de-estudos-reune-operarios-para-ler-o-capital", "titulo": "Grupo de estudos reúne operários para ler O Capital", "linha": "Os encontros semanais acontecem na sede do sindicato dos metalúrgicos de Porto Serrano.", "data": "2026-09-26T09:00:00-03:00", "editoria": "Formação", "tags": ["marxismo", "formação", "sindicatos"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}, {"id": "2026-09-18-enchente-deixa-familias-desalojadas-na-periferia-de-vale-bon", "titulo": "Enchente deixa famílias desalojadas na periferia de Vale Bonito", "linha": "Movimentos de moradia cobram um plano de reassentamento da prefeitura.", "data": "2026-09-18T09:00:00-03:00", "editoria": "Cidades", "tags": ["moradia", "cidades", "meio ambiente"], "autor": "Redação", "foto": "", "destaque": false, "ficticio": true}];
   }
   dados() {
-    return [
-      { id: 'n1', data: '2026-10-28', editoria: 'Trabalho', titulo: 'Motoristas de aplicativo de Santa Aurora param por 48 horas', linha: 'A categoria reivindica tarifa mínima por corrida e explicação para os bloqueios de conta.', tags: ['trabalho', 'greve', 'plataformas'] },
-      { id: 'n2', data: '2026-10-24', editoria: 'Campo', titulo: 'Assentamento Terra Viva colhe a primeira safra de arroz agroecológico', linha: 'Depois de três anos de disputa judicial, as famílias vendem a produção em uma feira própria.', tags: ['reforma agrária', 'agroecologia', 'campo'] },
-      { id: 'n3', data: '2026-10-21', editoria: 'Educação', titulo: 'Professores da rede municipal de Porto Serrano aprovam estado de greve', linha: 'A assembleia pede reposição salarial e concurso para substituir os contratos temporários.', tags: ['trabalho', 'educação', 'greve'] },
-      { id: 'n4', data: '2026-10-15', editoria: 'Memória', titulo: 'Arquivo de Vale Bonito digitaliza fichas de vigilância da ditadura', linha: 'O acervo ficará aberto à consulta pública a partir de dezembro.', tags: ['história do Brasil', 'ditadura', 'memória'] },
-      { id: 'n5', data: '2026-10-09', editoria: 'Cidades', titulo: 'Câmara de Santa Aurora debate tarifa zero no transporte coletivo', linha: 'O projeto prevê financiamento por uma taxa cobrada de grandes empregadores.', tags: ['transporte', 'cidades', 'orçamento público'] },
-      { id: 'n6', data: '2026-10-02', editoria: 'Trabalho', titulo: 'Metalúrgica Rio Claro do Norte anuncia fechamento de unidade', linha: 'O sindicato tenta negociar a manutenção dos postos de trabalho.', tags: ['trabalho', 'indústria', 'sindicatos'] },
-      { id: 'n7', data: '2026-09-26', editoria: 'Formação', titulo: 'Grupo de estudos reúne operários para ler O Capital', linha: 'Os encontros semanais acontecem na sede do sindicato dos metalúrgicos de Porto Serrano.', tags: ['marxismo', 'formação', 'sindicatos'] },
-      { id: 'n8', data: '2026-09-18', editoria: 'Cidades', titulo: 'Enchente deixa famílias desalojadas na periferia de Vale Bonito', linha: 'Movimentos de moradia cobram um plano de reassentamento da prefeitura.', tags: ['moradia', 'cidades', 'meio ambiente'] }
-    ];
+    var r = this.state && this.state.remoto;
+    var lista = (r || this.exemplos()).map(function (n) { return Object.assign({}, n, { data: String(n.data || '').slice(0, 10), tags: n.tags || [] }); });
+    return lista.sort(function (x, y) { return x.data < y.data ? 1 : -1; });
   }
   renderVals() {
     var self = this;
@@ -244,6 +247,7 @@ class Component extends DCLogic {
     var itens = filtrados.map(function (n) {
       return {
         id: n.id, titulo: n.titulo, linha: n.linha, editoria: n.editoria, dataTexto: fmt(n.data),
+        link: 'materia.html?id=' + encodeURIComponent(n.id), foto: n.foto || '', temFoto: !!n.foto, semFoto: !n.foto, ficticio: !!n.ficticio,
         tags: n.tags.map(function (t) { var a = selN.indexOf(norm(t)) >= 0; return { nome: t, ativa: a, inativa: !a, toggle: toggle(t) }; })
       };
     });
@@ -252,6 +256,7 @@ class Component extends DCLogic {
       ? itens.length + ' de ' + dados.length + ' notícias' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.join(' + ') : '')
       : dados.length + ' notícias';
     return {
+      temFicticio: dados.some(function (n) { return n.ficticio; }),
       menuAberto: !!(this.state && this.state.menuAberto),
       menuFechado: !(this.state && this.state.menuAberto),
       menuAbertoTxt: (this.state && this.state.menuAberto) ? 'true' : 'false',
