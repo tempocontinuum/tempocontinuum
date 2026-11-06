@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempo Continuum — Curso: Movimento estudantil municipal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:"Gotham Medium","Gotham","GothamMedium","Montserrat","Helvetica Neue",Arial,sans-serif;font-weight:500}
+h1,h2,h3,h4,p,th,dt,dd{font-weight:500}
+a{color:inherit}a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (max-width: 760px){
+.tc-header-row{flex-wrap:nowrap !important;gap:8px !important;padding:10px 16px !important}
+.tc-nav,.tc-buscar{display:none !important}
+.tc-logo{margin-right:auto;min-width:0}
+.tc-tema-txt{display:none}
+.tc-tema{padding:8px 12px !important}
+.tc-menu-btn{display:flex !important}
+.tc-painel{display:block !important}
+.tc-chips{flex-wrap:nowrap !important;overflow-x:auto;padding-bottom:8px;margin-right:-16px;padding-right:16px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.tc-chips>*{flex:none}
+main{padding-left:16px !important;padding-right:16px !important;gap:32px !important}
+footer>div{padding-left:16px !important;padding-right:16px !important}
+}
+</style>
+<style>html,body{margin:0} #app > div{min-height:100vh}</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+
+<div style="background: {{c.bg}}; color: {{c.ink}}; min-height: 100%; font-family: &quot;Gotham Medium&quot;, &quot;Gotham&quot;, &quot;Montserrat&quot;, Arial, sans-serif; font-weight: 500;">
+
+  <header style="background: {{c.bg}}; color: {{c.ink}}; border-bottom: 2px solid {{c.ink}};">
+    <div class="tc-header-row" style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px;">
+      <a class="tc-logo" href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" aria-label="Tempo Continuum, início">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><img src="logos/logo-claro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if><sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><img src="logos/logo-escuro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if>
+        <span style="font-size: 13px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase;">Tempo<br>Continuum</span>
+      </a>
+      <nav class="tc-nav" aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 6px 8px; flex: 1 1 560px; font-size: 15px;">
+        <a href="noticias.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Notícias</a>
+        <a href="politicos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Dossiês</a>
+        <a href="cursos.html" aria-current="page" style="text-decoration: none; padding: 8px 14px; border-radius: 999px; background: #8EA612; color: #060308;">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Ferramentas</a>
+      </nav>
+      <a class="tc-buscar" href="noticias.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; border: 2px solid {{c.ink}}; border-radius: 999px; padding: 8px 16px; font-size: 14px; min-height: 44px; box-sizing: border-box;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      <button type="button" class="tc-tema" onClick="{{alternarTema}}" aria-label="{{temaLabel}}" style="display: flex; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: {{c.ink}}; color: {{c.bg}}; border-radius: 999px; padding: 8px 16px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        <span class="tc-tema-txt">{{temaTexto}}</span>
+      </button>
+      <button type="button" class="tc-menu-btn" onClick="{{alternarMenu}}" aria-expanded="{{menuAbertoTxt}}" aria-controls="tc-painel" style="display: none; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: transparent; color: {{c.ink}}; border-radius: 999px; padding: 8px 14px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{menuFechado}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></sc-if>
+        <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if>
+        Menu
+      </button>
+    </div>
+    <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}">
+      <nav id="tc-painel" class="tc-painel" aria-label="Menu" style="display: none; border-top: 1px solid {{c.line}}; padding: 4px 16px 12px;">
+        <a href="index.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Início</a>
+        <a href="noticias.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Notícias</a>
+        <a href="politicos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Dossiês</a>
+        <a href="cursos.html" aria-current="page" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}}; background: #8EA612; color: #060308;">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Ferramentas</a>
+        <a href="noticias.html" onClick="{{fecharMenu}}" style="text-decoration: none; display: flex; align-items: center; gap: 10px; padding: 14px 12px; font-size: 18px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      </nav>
+    </sc-if>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 36px;">
+    <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / <a href="cursos.html" style="text-underline-offset: 3px;">Cursos</a> / Movimento estudantil municipal</p>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Curso · Organização</p>
+      <h1 style="margin: 0; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em; max-width: 20ch;"><span style="background: #8EA612; color: #060308; padding: 0 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Como construir o movimento estudantil na sua cidade</span></h1>
+      <p style="margin: 0; font-size: 1.1rem; line-height: 1.55; color: {{c.muted}}; max-width: 62ch;">Do grêmio da escola à entidade municipal: como fundar ou reativar uma UMES, a lei que protege a organização estudantil, as pautas que se decidem na cidade e a relação com a UBES e a UNE.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">
+        <span style="background: #8EA612; color: #060308; padding: 4px 10px;">7 módulos</span>
+        <span style="border: 1.5px solid {{c.ink}}; padding: 3px 10px;">Para secundaristas e grêmios</span>
+        <span style="border: 1.5px solid {{c.ink}}; padding: 3px 10px;">Dados de 5 nov. 2026</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; border-top: 2px solid {{c.ink}}; padding-top: 28px;">
+      <aside style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+        <nav aria-labelledby="h-sumario" style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 22px;">
+          <h2 id="h-sumario" style="margin: 0 0 14px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulos</h2>
+          <ol style="margin: 0; padding: 0 0 0 1.4em; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; line-height: 1.35;">
+            <li><a href="#m1" style="text-underline-offset: 3px;">Como o movimento se organiza</a></li>
+            <li><a href="#m2" style="text-underline-offset: 3px;">O que a lei garante</a></li>
+            <li><a href="#m3" style="text-underline-offset: 3px;">Fundar a entidade em 10 passos</a></li>
+            <li><a href="#m4" style="text-underline-offset: 3px;">Estrutura interna e finanças</a></li>
+            <li><a href="#m5" style="text-underline-offset: 3px;">Pautas da cidade</a></li>
+            <li><a href="#m6" style="text-underline-offset: 3px;">UBES, UNE e entidades estaduais</a></li>
+            <li><a href="#m7" style="text-underline-offset: 3px;">O primeiro ano</a></li>
+          </ol>
+          <p style="margin: 16px 0 0; font-size: 0.9rem;"><a href="#fontes" style="text-underline-offset: 3px;">Fontes</a></p>
+        </nav>
+        <div style="border: 1px solid {{c.line}}; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+          <h2 style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">A ideia central</h2>
+          <p style="margin: 0; font-size: 0.98rem; line-height: 1.55;">Grêmios ativos nas escolas elegem delegados, que fundam a entidade da cidade em congresso. A entidade atua onde se decide: Prefeitura, Câmara e conselhos municipais.</p>
+        </div>
+      </aside>
+
+      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 48px;">
+
+        <section id="m1" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 1</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">Como o movimento estudantil se organiza</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">O movimento estudantil brasileiro é uma pirâmide de representação: a base nas escolas e nos cursos elege delegados para as entidades municipais, estaduais e nacionais.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <h3 style="margin: 0; font-size: 0.95rem;">Secundaristas</h3>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">UBES</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Nacional · Conubes bienal</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">Entidade estadual</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Ex.: UPES, UGES, UESPE, ABES</span></div>
+              <div style="background: #8EA612; color: #060308; border: 2px solid #060308; padding: 11px 13px;">UMES / AMES<br><span style="font-size: 0.85rem;">Municipal · foco deste curso</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">Grêmio estudantil</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Um por escola · Lei 7.398</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <h3 style="margin: 0; font-size: 0.95rem;">Ensino superior</h3>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">UNE</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Nacional · Conune bienal</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">UEE</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">União Estadual dos Estudantes</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">DCE</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Um por universidade</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">CA / DA</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Um por curso</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <h3 style="margin: 0; font-size: 0.95rem;">Pós-graduação</h3>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">ANPG</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Nacional · pós-graduandos</span></div>
+              <div style="border: 1px solid {{c.line}}; padding: 12px 14px;"><strong style="font-weight: 500;">APG</strong><br><span style="font-size: 0.85rem; color: {{c.muted}};">Uma por universidade</span></div>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">Leia cada coluna de baixo para cima: cada nível elege delegados para o de cima.</p>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">A entidade municipal secundarista (UMES, UME ou AMES, conforme a cidade) é o elo entre os grêmios e as entidades estadual e nacional. Transporte escolar, merenda, reforma de escolas, passe livre e o Plano Municipal de Educação são decididos no município. Sem uma entidade da cidade, cada grêmio negocia sozinho com a direção.</p>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Exemplos reais: a UMESPA, de Porto Alegre, fundada em 1956, tem assento nos conselhos municipais de Educação, Desportos, Direitos da Mulher e FUNDEB. A AMES-Rio convocou em 2022 um congresso para refundar a entidade carioca, prova de que entidades paradas podem ser reconstruídas.</p>
+        </section>
+
+        <section id="m2" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 2</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">O que a lei garante</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">A organização estudantil é livre e garantida por lei federal. Nenhuma escola ou prefeitura pode proibi-la ou exigir aprovação prévia.</p>
+          <div style="overflow-x: auto;">
+            <table style="border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.92rem; line-height: 1.45;">
+              <thead><tr>
+                <th style="text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Norma</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">O que garante</th>
+                <th style="text-align: left; padding: 10px 0 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Uso prático</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://planalto.gov.br/ccivil_03/leis/L7398.htm" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 7.398/1985</a><br><span style="font-size: 0.82rem; color: {{c.muted}};">Lei do Grêmio Livre</span></td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Grêmio como entidade autônoma, com estatuto próprio e eleição por voto direto e secreto</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Base para criar grêmios em toda escola da cidade</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://normas.leg.br/?urn=urn%3Alex%3Abr%3Afederal%3Alei%3A1985-10-31%3B7395" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 7.395/1985</a></td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Reconhece UNE, UEEs, DCEs e CAs como representação do ensino superior</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Legitima a articulação com universitários</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://www2.camara.leg.br/legin/fed/lei/2013/lei-12933-26-dezembro-2013-777776-normaatualizada-pl.pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 12.933/2013</a><br><span style="font-size: 0.82rem; color: {{c.muted}};">Meia-entrada</span></td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Entidades estaduais e municipais podem emitir a Carteira de Identificação Estudantil (CIE), seguindo o padrão nacional</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Fonte de receita e de contato com a base</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">ECA, art. 53, IV</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Direito do estudante de se organizar e participar de entidades estudantis</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Argumento diante de direções resistentes</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://normas.leg.br/?urn=urn%3Alex%3Abr%3Afederal%3Alei%3A2013-08-05%3B12852" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 12.852/2013</a><br><span style="font-size: 0.82rem; color: {{c.muted}};">Estatuto da Juventude</span></td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Interlocução da juventude com o poder público por meio de organizações juvenis</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Pedir assento em conselhos municipais</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://normas.leg.br/?urn=urn%3Alex%3Abr%3Afederal%3Alei%3A2014-06-25%3B13005" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 13.005/2014</a><br><span style="font-size: 0.82rem; color: {{c.muted}};">Plano Nacional de Educação</span></td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Estímulo à criação e ao fortalecimento de grêmios em todas as redes</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Cobrar meta equivalente no Plano Municipal de Educação</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="background: {{c.surface}}; border-left: 4px solid #8EA612; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px;">
+            <h3 style="margin: 0; font-size: 1rem;">E a carteirinha?</h3>
+            <p style="margin: 0; font-size: 0.98rem; line-height: 1.6;">No julgamento da ADI 5108, o STF derrubou a expressão "filiadas àquelas" da Lei da Meia-Entrada. A entidade municipal não precisa ser filiada à UNE ou à UBES para emitir a CIE, mas precisa ser de fato representativa e seguir o modelo nacional.</p>
+          </div>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Em tramitação: o <a href="https://www12.senado.leg.br/noticias/materias/2025/09/23/avanca-regulamentacao-de-gremios-e-diretorios-estudantis" target="_blank" rel="noopener" style="text-underline-offset: 3px;">PL 3.618/2019</a> foi aprovado na Comissão de Educação do Senado em setembro de 2025. Ele inclui grêmios e diretórios na LDB e prevê espaço físico e assento em conselhos. Vale acompanhar o andamento na Câmara.</p>
+        </section>
+
+        <section id="m3" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 3</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">Fundar a entidade em 10 passos</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">A entidade nasce legítima quando é fundada em congresso com delegados eleitos nas escolas. Sem isso, é só um grupo de amigos com um nome.</p>
+          <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">1</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Formar a comissão pró-entidade.</strong> Reúna estudantes de 5 a 10 escolas diferentes, de redes pública e privada e de bairros distintos. A pluralidade evita que a entidade nasça como braço de um só grupo.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">2</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Mapear as escolas da cidade.</strong> Liste as escolas de ensino fundamental II, médio, técnico e EJA, marcando quais têm grêmio ativo. O Censo Escolar do INEP dá a lista oficial.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">3</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Criar ou reativar grêmios.</strong> Os grêmios são a base do congresso. Onde não houver, apoie uma comissão pró-grêmio: assembleia, estatuto e eleição direta.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">4</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Procurar a UBES e a entidade estadual.</strong> Elas costumam ceder modelos de estatuto e regimento e indicar um diretor para a mesa do congresso, como fez a UBES no congresso da AMES-Rio.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">5</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Escrever o regimento do congresso.</strong> Defina data e local, quem vota, a proporção de delegados por escola (por exemplo, 1 a cada 50 ou 100 estudantes), o prazo para inscrever chapas e a comissão eleitoral.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">6</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Eleger delegados nas escolas.</strong> Cada escola faz eleição ou assembleia com ata assinada. A comissão confere a documentação e publica a lista de delegados.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">7</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Realizar o congresso de fundação.</strong> Pauta mínima: aprovar o estatuto, debater as bandeiras, eleger a diretoria e o conselho fiscal. Lavre ata com lista de presença.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">8</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Registrar a entidade.</strong> Leve estatuto e ata ao Cartório de Registro Civil de Pessoas Jurídicas e depois peça o CNPJ na Receita Federal. Como a maioria dos diretores é menor de idade, os atos civis pedem assistência dos responsáveis ou um diretor maior de 18 anos na presidência e na tesouraria; confirme com o cartório local.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">9</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Abrir conta e prestar contas.</strong> Conta no CNPJ da entidade, nunca em nome pessoal. Balancete publicado a cada semestre.</div></li>
+            <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid {{c.line}}; border-bottom: 1px solid {{c.line}};"><span aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">10</span><div style="flex: 1; min-width: 0; line-height: 1.55;"><strong style="font-weight: 500;">Apresentar a entidade ao poder público.</strong> Ofício à Prefeitura, à Secretaria de Educação e à Câmara comunicando a fundação e pedindo assento nos conselhos. Uma lei de utilidade pública, como as que a UMES de Rondonópolis e a de Itapevi obtiveram, abre portas para parcerias.</div></li>
+          </ol>
+        </section>
+
+        <section id="m4" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 4</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">Estrutura interna e finanças</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">O modelo das entidades nacionais funciona na escala da cidade: congresso como instância máxima, conselho de grêmios entre um congresso e outro e uma diretoria enxuta que executa.</p>
+          <div style="overflow-x: auto;">
+            <table style="border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.92rem; line-height: 1.45;">
+              <thead><tr>
+                <th style="text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Instância</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Quem compõe</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Frequência</th>
+                <th style="text-align: left; padding: 10px 0 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Decide</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Congresso municipal</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Delegados eleitos nas escolas</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">A cada 1 ou 2 anos</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Estatuto, bandeiras, diretoria</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Conselho de Entidades de Base</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Um representante por grêmio</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">A cada 2 ou 3 meses</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Campanhas, calendário, contas</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Diretoria executiva</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">7 a 15 eleitos no congresso</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Semanal ou quinzenal</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Execução do dia a dia</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Conselho fiscal</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">3 eleitos, fora da diretoria</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Semestral</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Aprova ou rejeita as contas</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Cargos mínimos da diretoria: presidência, vice, secretaria-geral, tesouraria, comunicação, grêmios e organização, cultura e esportes, políticas educacionais.</p>
+          <h3 style="margin: 6px 0 0; font-size: 1.1rem;">Duas regras das nacionais que vale copiar</h3>
+          <ul style="margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 10px; font-size: 1.02rem; line-height: 1.6; max-width: 66ch;">
+            <li><strong style="font-weight: 500;">Proporcionalidade.</strong> Na UNE, a diretoria é dividida conforme os votos de cada chapa; em 2025 foram 81 cargos, 17 deles na executiva. Assim a oposição fica dentro da entidade.</li>
+            <li><strong style="font-weight: 500;">Cota de gênero.</strong> A UBES reserva ao menos 30% das vagas da diretoria para mulheres, regra aprovada no 37º Conubes.</li>
+          </ul>
+          <h3 style="margin: 6px 0 0; font-size: 1.1rem;">Finanças</h3>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Receitas típicas: emissão da carteirinha, festas e eventos, rifas, contribuição voluntária dos grêmios e projetos com o poder público. A UMESPA, por exemplo, recebeu emenda de R$ 145.213 para ações sobre o Estatuto da Juventude. Toda receita entra na conta da entidade e aparece no balancete.</p>
+        </section>
+
+        <section id="m5" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 5</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">Pautas da cidade</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">A entidade ganha relevância quando conquista algo concreto no primeiro ano. Escolha uma ou duas pautas locais e vá até o fim.</p>
+          <div style="overflow-x: auto;">
+            <table style="border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.92rem; line-height: 1.45;">
+              <thead><tr>
+                <th style="text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Pauta</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Onde se decide</th>
+                <th style="text-align: left; padding: 10px 0 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Como atuar</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Passe livre ou meia-passagem</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Prefeitura, Câmara, empresa de ônibus</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Abaixo-assinado, audiência pública, projeto de lei de iniciativa popular</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Infraestrutura das escolas</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Secretaria Municipal de Educação</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Dossiê com fotos por escola, reunião com a secretaria</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Merenda escolar</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Conselho de Alimentação Escolar (CAE)</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Pedir vaga de representante estudantil</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Plano Municipal de Educação</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Câmara e Conselho Municipal de Educação</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Propor meta de grêmio em toda escola, espelhando o PNE</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Uso do FUNDEB</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Conselho Municipal do FUNDEB</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Acompanhar as contas, como faz a UMESPA</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Cultura, esporte e lazer</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Secretarias e conselhos setoriais</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Festivais, jogos estudantis, meia-entrada</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Participação política</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Justiça Eleitoral, escolas</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Campanha pelo título aos 16 anos, como o "Se Liga 16" da UBES</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Ferramentas de pressão, da mais leve à mais forte: ofício e reunião; abaixo-assinado; tribuna livre da Câmara; audiência pública; ato público; mobilização de rua. Comece pelo diálogo e registre tudo por escrito.</p>
+          <div style="background: {{c.surface}}; border-left: 4px solid #8EA612; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px;">
+            <h3 style="margin: 0; font-size: 1rem;">Autonomia</h3>
+            <p style="margin: 0; font-size: 0.98rem; line-height: 1.6;">A entidade representa todos os estudantes, de qualquer posição política. Pode dialogar com partidos, vereadores e governo, mas suas decisões saem do congresso e do conselho de grêmios, não de fora.</p>
+          </div>
+        </section>
+
+        <section id="m6" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 6</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">UBES, UNE e entidades estaduais</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Filiar-se é opcional, mas dá acesso aos congressos nacionais, às campanhas, à formação e ao sistema padronizado da carteirinha.</p>
+          <div style="overflow-x: auto;">
+            <table style="border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.92rem; line-height: 1.45;">
+              <thead><tr>
+                <th style="text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Entidade</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Representa</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Presidência</th>
+                <th style="text-align: left; padding: 10px 0 10px 12px; border-bottom: 2px solid {{c.ink}}; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Último congresso</th>
+              </tr></thead>
+              <tbody>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">UBES</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Fundamental, médio, técnico, pré-vestibular e EJA</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://www.portaltela.com/brasil/2026/04/24/roberta-pontes-e-a-nova-presidente-da-ubes/" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Roberta Pontes</a> (PE), eleita em abril de 2026 com 3.238 votos (87%), chapa única</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">46º Conubes, São Bernardo do Campo, mais de 7 mil estudantes</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">UNE</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Ensino superior</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;"><a href="https://www.brasildefato.com.br/2025/07/20/bianca-borges-e-eleita-presidenta-da-uniao-nacional-dos-estudantes/" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Bianca Borges</a> (IFSP), eleita em julho de 2025 com 82,6%</td><td style="padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">60º Conune, Goiânia; o próximo deve ser em 2027</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">ANPG</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Pós-graduação</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;" colspan="2">Também emite a carteirinha pela Lei 12.933</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Entidade estadual secundarista</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Secundaristas do estado</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;" colspan="2">Nome varia por estado: UPES, UGES, UESPE, ABES, UCMG e outras</td></tr>
+                <tr><td style="padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; vertical-align: top;">UEE</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;">Universitários do estado</td><td style="padding: 12px; border-bottom: 1px solid {{c.line}}; vertical-align: top;" colspan="2">Uma por estado, com congresso próprio</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 style="margin: 6px 0 0; font-size: 1.1rem;">Como participar dos congressos nacionais</h3>
+          <ul style="margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 10px; font-size: 1.02rem; line-height: 1.6; max-width: 66ch;">
+            <li><strong style="font-weight: 500;">Conubes (UBES), a cada dois anos.</strong> Os delegados são eleitos dentro de cada escola, com inscrição no sistema da UBES e voto em urna. A entidade municipal organiza as escolas da cidade para elegerem os seus.</li>
+            <li><strong style="font-weight: 500;">Conune (UNE), a cada dois anos.</strong> Delegados eleitos em cada instituição de ensino superior; o DCE ou CA envia ata de eleição e estatuto.</li>
+          </ul>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">Na prática, a UMES é a ponte: leva as pautas da cidade aos congressos e traz as campanhas nacionais para as escolas.</p>
+        </section>
+
+        <section id="m7" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Módulo 7</p>
+          <h2 style="margin: 0; font-size: 1.6rem; line-height: 1.15;">O primeiro ano</h2>
+          <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;">A entidade é fundada no 6º mês e passa a atuar na cidade no segundo semestre. Dois marcos separam as fases: sem delegados eleitos não há congresso legítimo, e sem registro não há conta, convênio nem carteirinha.</p>
+          <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            <li style="border: 1px solid {{c.line}}; padding: 16px; display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Meses 1 a 2</span><strong style="font-weight: 500; font-size: 1.1rem;">Mobilização</strong><span style="font-size: 0.9rem; line-height: 1.5;">Comissão pró-entidade, mapa das escolas, contato com UBES e entidade estadual</span></li>
+            <li style="border: 1px solid {{c.line}}; padding: 16px; display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Meses 3 a 5</span><strong style="font-weight: 500; font-size: 1.1rem;">Base</strong><span style="font-size: 0.9rem; line-height: 1.5;">Grêmios criados ou reativados, regimento, eleição de delegados</span><span style="font-size: 12px; margin-top: auto;">◆ Marco: delegados eleitos</span></li>
+            <li style="background: #8EA612; color: #060308; border: 2px solid #060308; padding: 15px; display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">Mês 6</span><strong style="font-weight: 500; font-size: 1.1rem;">Fundação</strong><span style="font-size: 0.9rem; line-height: 1.5;">Congresso, estatuto, diretoria, registro e CNPJ</span><span style="font-size: 12px; margin-top: auto;">◆ Marco: entidade registrada</span></li>
+            <li style="border: 1px solid {{c.line}}; padding: 16px; display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}};">Meses 7 a 12</span><strong style="font-weight: 500; font-size: 1.1rem;">Atuação</strong><span style="font-size: 0.9rem; line-height: 1.5;">Ofícios e conselhos, primeira campanha, balancete semestral</span></li>
+          </ol>
+          <h3 style="margin: 6px 0 0; font-size: 1.1rem;">Checklist</h3>
+          <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 24px; font-size: 0.95rem; line-height: 1.45;">
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Comissão com estudantes de pelo menos 5 escolas</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Lista das escolas com situação do grêmio</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Contato com UBES e entidade estadual</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Estatuto e regimento revisados</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Grêmios criados ou reativados</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Delegados eleitos, com atas</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Congresso realizado e diretoria eleita</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Registro em cartório e CNPJ</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Conta bancária no nome da entidade</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Ofícios à Prefeitura, Secretaria e Câmara</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Pedido de assento nos conselhos</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Primeira campanha lançada</li>
+            <li style="display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid {{c.line}};"><span aria-hidden="true">☐</span>Primeiro balancete publicado</li>
+          </ul>
+        </section>
+
+        <section id="fontes" style="display: flex; flex-direction: column; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 24px; scroll-margin-top: 16px;">
+          <h2 style="margin: 0; font-size: 1.4rem;">Fontes</h2>
+          <ul style="margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; font-size: 0.92rem; line-height: 1.45;">
+            <li><a href="https://planalto.gov.br/ccivil_03/leis/L7398.htm" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 7.398/1985, Lei do Grêmio Livre</a> (Planalto)</li>
+            <li><a href="https://www2.camara.leg.br/legin/fed/lei/2013/lei-12933-26-dezembro-2013-777776-normaatualizada-pl.pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Lei 12.933/2013, meia-entrada, texto atualizado</a> (Câmara)</li>
+            <li><a href="https://www25.senado.leg.br/web/atividade/materias/-/materia/114562/pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Ficha da Lei 12.933 e decisão na ADI 5108</a> (Senado)</li>
+            <li><a href="https://www12.senado.leg.br/noticias/materias/2025/09/23/avanca-regulamentacao-de-gremios-e-diretorios-estudantis" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Avança regulamentação de grêmios e diretórios estudantis</a> (Agência Senado, 23 set. 2025)</li>
+            <li><a href="https://www.portaltela.com/brasil/2026/04/24/roberta-pontes-e-a-nova-presidente-da-ubes/" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Roberta Pontes é a nova presidente da Ubes</a> (Portal Tela, 24 abr. 2026)</li>
+            <li><a href="https://www.brasildefato.com.br/2025/07/20/bianca-borges-e-eleita-presidenta-da-uniao-nacional-dos-estudantes/" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Bianca Borges é eleita presidenta da UNE</a> (Brasil de Fato, 20 jul. 2025)</li>
+            <li><a href="https://vermelho.org.br/?p=153889" target="_blank" rel="noopener" style="text-underline-offset: 3px;">37º Conubes aprova reserva de 30% da diretoria para mulheres</a> (Vermelho)</li>
+            <li><a href="https://vermelho.org.br/2013/09/26/40-conubes-tem-recorde-de-inscricao/" target="_blank" rel="noopener" style="text-underline-offset: 3px;">40º Conubes: eleição de delegados nas escolas</a> (Vermelho)</li>
+            <li><a href="https://docs.google.com/document/d/1lHCFRF-QwabAYk94ecxVRIq5a4dgWOei/export?format=pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Regimento do Congresso da AMES-Rio</a></li>
+            <li><a href="https://camarapoa.rs.gov.br/draco/processos/140460/Anexo_Emenda_499.pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">UMESPA: histórico e conselhos</a> (Câmara de Porto Alegre)</li>
+            <li><a href="https://www.al.mt.gov.br/norma-juridica/urn:lex:br;mato.grosso:estadual:lei.ordinaria:1987-12-03;5199/gerar-pdf-redacao" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Utilidade pública da UMES de Rondonópolis</a> (AL-MT)</li>
+            <li><a href="https://www.al.sp.gov.br/repositorio/legislacao/lei/1962/lei-7216-24.10.1962.html" target="_blank" rel="noopener" style="text-underline-offset: 3px;">Utilidade pública da UMESI de Itapevi</a> (Alesp)</li>
+            <li><a href="https://archivum.grupomarista.org.br/pergamumweb/vinculos/00009b/00009b97.pdf" target="_blank" rel="noopener" style="text-underline-offset: 3px;">As práticas estudantis da UMES de São José dos Pinhais (2007-2015)</a> (dissertação, PUCPR, 2021)</li>
+          </ul>
+          <p style="margin: 0; font-size: 12px; color: {{c.muted}};">Dados reunidos em 5 de novembro de 2026. Este curso é material de formação e não substitui orientação jurídica; confirme os requisitos de registro com o cartório da sua cidade.</p>
+          <p style="margin: 8px 0 0;"><a href="cursos.html" style="text-decoration: none; border: 2px solid {{c.ink}}; padding: 10px 18px; font-size: 14px; display: inline-block;">← Todos os cursos</a></p>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 48px 24px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Tempo Continuum</p>
+        <p style="margin: 0; font-size: 1.4rem; line-height: 1.25; max-width: 24ch;"><span style="background: #8EA612; color: #060308; padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Conhecer o passado. Organizar o presente. Construir o futuro.</span></p>
+      </div>
+      <nav aria-label="Rodapé" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 40px; font-size: 14px; align-content: start;">
+        <a href="noticias.html" style="text-decoration: none;">Notícias</a>
+        <a href="dossies.html" style="text-decoration: none;">Dossiês</a>
+        <a href="politicos.html" style="text-decoration: none;">Políticos</a>
+        <a href="cursos.html" style="text-decoration: none;">Cursos</a>
+        <a href="casos.html" style="text-decoration: none;">Casos</a>
+        <a href="index.html" style="text-decoration: none;">Início</a>
+        <a href="documentarios.html" style="text-decoration: none;">Documentários</a>
+        <a href="ferramentas.html" style="text-decoration: none;">Ferramentas</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</template>
+<script src="js/runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { escuro: null };
+  }
+  componentDidMount() {
+    try {
+      var v = window.localStorage.getItem('tc-tema');
+      if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
+    } catch (e) {}
+  }
+  renderVals() {
+    var escuro = (this.state && this.state.escuro !== null && this.state.escuro !== undefined)
+      ? this.state.escuro
+      : (this.props.tema ?? 'claro') === 'escuro';
+    var self = this;
+    var c = escuro
+      ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
+      : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    return {
+      menuAberto: !!(this.state && this.state.menuAberto),
+      menuFechado: !(this.state && this.state.menuAberto),
+      menuAbertoTxt: (this.state && this.state.menuAberto) ? 'true' : 'false',
+      alternarMenu: (function (eu) { return function () { eu.setState({ menuAberto: !(eu.state && eu.state.menuAberto) }); }; })(this),
+      fecharMenu: (function (eu) { return function () { eu.setState({ menuAberto: false }); }; })(this),
+      c: c,
+      escuro: escuro,
+      claro: !escuro,
+      temaTexto: escuro ? 'Claro' : 'Escuro',
+      temaLabel: escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro',
+      alternarTema: function () {
+        var novo = !escuro;
+        self.setState({ escuro: novo });
+        try { window.localStorage.setItem('tc-tema', novo ? 'escuro' : 'claro'); } catch (e) {}
+      }
+    };
+  }
+}
+iniciarPagina(Component, {"tema": "claro"});
+</script>
+</body>
+</html>
