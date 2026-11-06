@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
-# Configuração do editor de matérias (Sveltia CMS).
+# Configuração do editor do site (Sveltia CMS): matérias e fichas de políticos.
 # Guia da equipe: "Como lançar matérias no Tempo Continuum".
 
 backend:
@@ -11,13 +11,13 @@ backend:
   # (github.com/sveltia/sveltia-cms-auth) e descomente a linha abaixo:
   # base_url: https://sveltia-cms-auth.SEU-SUBDOMINIO.workers.dev
   commit_messages:
-    create: "Nova matéria: {{slug}}"
-    update: "Atualiza matéria: {{slug}}"
-    delete: "Remove matéria: {{slug}}"
+    create: "Novo item em {{collection}}: {{slug}}"
+    update: "Atualiza item em {{collection}}: {{slug}}"
+    delete: "Remove item de {{collection}}: {{slug}}"
     uploadMedia: "Envia imagem: {{path}}"
     deleteMedia: "Remove imagem: {{path}}"
 
-# Cada matéria vira um pull request e passa por Rascunho → Em revisão → Pronta.
+# Cada matéria ou ficha vira um pull request e passa por Rascunho → Em revisão → Pronta.
 # Só vai para o site quando alguém clica em "Publicar".
 publish_mode: editorial_workflow
 
@@ -112,3 +112,151 @@ collections:
         buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
         editor_components: [image]
         hint: 'Use "Título 2" para os intertítulos. Parágrafos curtos, de 2 a 4 frases.'
+
+  - name: politicos
+    label: Políticos
+    label_singular: Ficha
+    description: 'Fichas de atores políticos. Cada ficha aparece na página Políticos e tem endereço próprio (ficha.html?id=...).'
+    folder: conteudo/politicos
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{nome}}"
+    identifier_field: nome
+    summary: "{{nome}} · {{cargo_curto}} · {{partido}}"
+    sortable_fields:
+      fields: [nome, partido, atualizado]
+      default:
+        field: nome
+        direction: ascending
+    preview_path: "ficha.html?id={{slug}}"
+    media_folder: /imagens/politicos
+    public_folder: /imagens/politicos
+    fields:
+      - name: nome
+        label: Nome
+        widget: string
+        hint: 'Nome pelo qual a pessoa é conhecida. Ex.: "Marcel van Hattem". O endereço da ficha é criado a partir dele.'
+      - name: iniciais
+        label: Iniciais
+        widget: string
+        required: false
+        maxlength: 3
+        hint: 'Aparecem no círculo quando não há foto. Ex.: "MH". Se ficar em branco, o site usa as iniciais do nome.'
+      - name: foto
+        label: Foto
+        widget: image
+        required: false
+        hint: 'Quadrada, de preferência com 600 px. Só use fotos que vocês podem publicar (ex.: fotos oficiais da Câmara ou do Senado, com crédito nas fontes).'
+      - name: categoria
+        label: Categoria na página Políticos
+        widget: select
+        options: [Presidente, Senador, Deputado federal, Governador, Prefeito, Deputado estadual, Vereador, Outro]
+        hint: 'Define em qual filtro a ficha aparece.'
+      - name: cargo_curto
+        label: Cargo (curto)
+        widget: string
+        hint: 'Aparece no cartão da página Políticos. Ex.: "Senador eleito".'
+      - name: partido
+        label: Partido atual
+        widget: string
+      - name: uf
+        label: Estado (UF)
+        widget: string
+        maxlength: 2
+        required: false
+      - name: chamada
+        label: Linha do cartão
+        widget: string
+        required: false
+        hint: 'Uma linha curta no cartão da página Políticos. Ex.: "Eleito em 2026 · mandato 2027–2035".'
+      - name: subtitulo
+        label: Subtítulo da ficha
+        widget: string
+        hint: 'Linha abaixo do nome. Ex.: "Senador eleito pelo Rio Grande do Sul · Novo".'
+      - name: selos
+        label: Selos
+        widget: list
+        required: false
+        summary: "{{fields.texto}}"
+        hint: 'Etiquetas curtas abaixo do subtítulo. Ex.: "Eleito em 2026", "Mandato 2027–2035".'
+        fields:
+          - { name: texto, label: Texto, widget: string }
+          - { name: destaque, label: Destacar em verde, widget: boolean, default: false }
+      - name: dados
+        label: Dados
+        widget: list
+        required: false
+        summary: "{{fields.rotulo}}: {{fields.valor}}"
+        hint: 'Caixa lateral da ficha. Use sempre os mesmos rótulos: Nome completo, Nascimento, Naturalidade, Formação, Profissão, Partido atual, Cargo.'
+        fields:
+          - { name: rotulo, label: Rótulo, widget: string }
+          - { name: valor, label: Valor, widget: string }
+      - name: resumo
+        label: Resumo
+        widget: text
+        hint: 'De 3 a 5 frases, só com fatos verificáveis. Para negrito use **assim**; para itálico, *assim*; para link, [texto](https://...).'
+      - name: trajetoria
+        label: Trajetória
+        widget: list
+        required: false
+        summary: "{{fields.quando}} · {{fields.fato}}"
+        hint: 'Do mais antigo para o mais recente.'
+        fields:
+          - { name: quando, label: Quando, widget: string, hint: 'Ex.: "2018", "2015–2018", "jul. 2023".' }
+          - { name: fato, label: O que aconteceu, widget: string }
+      - name: eleicoes
+        label: Eleições
+        widget: list
+        required: false
+        summary: "{{fields.ano}} · {{fields.cargo}} · {{fields.resultado}}"
+        hint: 'A tabela é ordenada pelo ano automaticamente. Confira os votos no TSE (dadosabertos.tse.jus.br).'
+        fields:
+          - { name: ano, label: Ano, widget: number, value_type: int }
+          - { name: cargo, label: Cargo, widget: string, hint: 'Ex.: "Deputado federal (RS)".' }
+          - { name: partido, label: Partido, widget: string }
+          - { name: votos, label: Votos, widget: string, required: false, hint: 'Ex.: "349.855" ou "33.931 (0,69%)".' }
+          - { name: resultado, label: Resultado, widget: string, hint: 'Ex.: "Eleito · mais votado do RS" ou "Não eleito".' }
+          - { name: destaque, label: Destacar o resultado em verde, widget: boolean, default: false, hint: 'Use só na eleição mais recente vencida.' }
+      - name: nota_eleicoes
+        label: Nota abaixo da tabela de eleições
+        widget: string
+        required: false
+      - name: atuacao_titulo
+        label: Título da seção de atuação
+        widget: string
+        default: Atuação parlamentar
+        hint: 'Ex.: "Atuação parlamentar" ou "Atuação e obras".'
+      - name: atuacao
+        label: Atuação
+        widget: list
+        required: false
+        field: { name: item, label: Item, widget: string }
+      - name: posicoes
+        label: Posições declaradas
+        widget: list
+        required: false
+        hint: 'Só o que a pessoa disse ou defendeu publicamente, com fonte.'
+        field: { name: item, label: Item, widget: string }
+      - name: controversias
+        label: Controvérsias e processos
+        widget: list
+        required: false
+        hint: 'Comece com a data em negrito. Ex.: "**Nov. 2024:** indiciado pela Polícia Federal...". Registre também a versão da pessoa.'
+        field: { name: item, label: Item, widget: string }
+      - name: fontes
+        label: Fontes
+        widget: list
+        summary: "{{fields.titulo}}"
+        hint: 'Toda informação da ficha precisa estar em alguma destas fontes.'
+        fields:
+          - { name: titulo, label: Título, widget: string, hint: 'Ex.: "Título da matéria — Veículo, 4 out. 2026".' }
+          - { name: url, label: Endereço (link), widget: string }
+      - name: atualizado
+        label: Data da última revisão
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+        date_format: DD/MM/YYYY
+        default: "{{now}}"
