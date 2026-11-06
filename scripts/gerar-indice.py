@@ -1,8 +1,10 @@
-"""Gera dados/noticias.json a partir das matérias em conteudo/noticias/.
+"""Gera os índices do site a partir dos arquivos gravados pelo editor.
 
-O editor (Sveltia CMS) grava cada matéria num arquivo próprio. O site lê só
-este índice para montar a Home e a página Notícias; o texto completo de cada
-matéria é lido do arquivo dela, na página materia.html.
+- dados/noticias.json, com as matérias de conteudo/noticias/. A Home e a página
+  Notícias leem este índice; o texto completo de cada matéria é lido do arquivo
+  dela, na página materia.html.
+- dados/politicos.json, com as fichas de conteudo/politicos/. A página Políticos
+  lê este índice; a ficha completa é lida do arquivo dela, na página ficha.html.
 
 Uso: python3 scripts/gerar-indice.py
 """
@@ -13,6 +15,9 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "conteudo" / "noticias"
 SAIDA = RAIZ / "dados" / "noticias.json"
+PASTA_POLITICOS = RAIZ / "conteudo" / "politicos"
+SAIDA_POLITICOS = RAIZ / "dados" / "politicos.json"
+CAMPOS_POLITICOS = ("nome", "iniciais", "foto", "categoria", "cargo_curto", "partido", "uf", "chamada")
 CAMPOS = ("titulo", "linha", "data", "editoria", "tags", "autor", "foto", "destaque", "ficticio")
 
 
@@ -49,8 +54,33 @@ def main():
     SAIDA.write_text(json.dumps(materias, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     print(f"{len(materias)} matérias em {SAIDA.relative_to(RAIZ)}")
+    problemas += gerar_politicos()
     for problema in problemas:
         print(f"Aviso: {problema}", file=sys.stderr)
+
+
+def gerar_politicos():
+    """Grava dados/politicos.json e devolve a lista de avisos."""
+    fichas, problemas = [], []
+    for arquivo in sorted(PASTA_POLITICOS.glob("*.json")):
+        try:
+            dados = json.loads(arquivo.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as erro:
+            problemas.append(f"{arquivo.name}: arquivo inválido ({erro})")
+            continue
+        if not dados.get("nome"):
+            problemas.append(f"{arquivo.name}: sem nome, ficou de fora")
+            continue
+        item = {"id": arquivo.stem}
+        for campo in CAMPOS_POLITICOS:
+            item[campo] = dados.get(campo) or ""
+        item["foto"] = caminho_relativo(item["foto"])
+        fichas.append(item)
+
+    fichas.sort(key=lambda f: f["nome"].casefold())
+    SAIDA_POLITICOS.write_text(json.dumps(fichas, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"{len(fichas)} fichas em {SAIDA_POLITICOS.relative_to(RAIZ)}")
+    return problemas
 
 
 if __name__ == "__main__":

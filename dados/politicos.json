@@ -1,0 +1,24 @@
+[
+ {
+  "id": "jones-manoel",
+  "nome": "Jones Manoel",
+  "iniciais": "JM",
+  "foto": "",
+  "categoria": "Deputado federal",
+  "cargo_curto": "Deputado federal eleito",
+  "partido": "PSOL",
+  "uf": "PE",
+  "chamada": "Eleito em 2026 · mandato 2027–2031"
+ },
+ {
+  "id": "marcel-van-hattem",
+  "nome": "Marcel van Hattem",
+  "iniciais": "MH",
+  "foto": "",
+  "categoria": "Senador",
+  "cargo_curto": "Senador eleito",
+  "partido": "Novo",
+  "uf": "RS",
+  "chamada": "Eleito em 2026 · mandato 2027–2035"
+ }
+]
