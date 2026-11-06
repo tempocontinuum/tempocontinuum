@@ -14,10 +14,15 @@ Cada matéria salva no editor vira um pull request com o rótulo de status (Rasc
 
 - `*.html` e `js/runtime.js`: as páginas do site.
 - `conteudo/noticias/*.json`: uma matéria por arquivo, gravada pelo editor.
-- `dados/noticias.json`: índice das matérias, gerado por `scripts/gerar-indice.py`. A Home e a página Notícias leem este arquivo.
-- `imagens/materias/`: fotos enviadas pelo editor.
-- `admin/`: o editor de matérias e a sua configuração (`config.yml`).
-- `.github/workflows/publicar-site.yml`: gera o índice e publica o site a cada mudança no `main`.
+- `conteudo/politicos/*.json`: uma ficha de político por arquivo, gravada pelo editor. A página `ficha.html?id=<arquivo>` monta a ficha.
+- `dados/noticias.json` e `dados/politicos.json`: índices gerados por `scripts/gerar-indice.py`. A Home e a página Notícias leem o primeiro; a página Políticos, o segundo.
+- `imagens/materias/` e `imagens/politicos/`: fotos enviadas pelo editor.
+- `admin/`: o editor de matérias e fichas e a sua configuração (`config.yml`).
+- `.github/workflows/publicar-site.yml`: gera os índices e publica o site a cada mudança no `main`.
+
+## Como lançar ou editar fichas de políticos
+
+No editor, abra **Políticos** e crie uma ficha nova ou edite uma existente. Como as matérias, cada ficha vira um pull request e só entra no site quando é publicada. Toda informação precisa estar nas fontes da ficha. O link "Ver histórico de edições" de cada ficha mostra todas as mudanças feitas nela.
 
 ## Testar no computador
 
