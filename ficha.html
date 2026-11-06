@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempo Continuum — Ficha de político</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:"Gotham Medium","Gotham","GothamMedium","Montserrat","Helvetica Neue",Arial,sans-serif;font-weight:500}
+h1,h2,h3,h4,p,th,dt,dd{font-weight:500}
+a{color:inherit}a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (max-width: 760px){
+.tc-header-row{flex-wrap:nowrap !important;gap:8px !important;padding:10px 16px !important}
+.tc-nav,.tc-buscar{display:none !important}
+.tc-logo{margin-right:auto;min-width:0}
+.tc-tema-txt{display:none}
+.tc-tema{padding:8px 12px !important}
+.tc-menu-btn{display:flex !important}
+.tc-painel{display:block !important}
+.tc-chips{flex-wrap:nowrap !important;overflow-x:auto;padding-bottom:8px;margin-right:-16px;padding-right:16px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.tc-chips>*{flex:none}
+main{padding-left:16px !important;padding-right:16px !important;gap:32px !important}
+footer>div{padding-left:16px !important;padding-right:16px !important}
+}
+</style>
+<style>html,body{margin:0} #app > div{min-height:100vh}</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+
+<div style="background: {{c.bg}}; color: {{c.ink}}; min-height: 100%; font-family: &quot;Gotham Medium&quot;, &quot;Gotham&quot;, &quot;Montserrat&quot;, Arial, sans-serif; font-weight: 500;">
+
+  <header style="background: {{c.bg}}; color: {{c.ink}}; border-bottom: 2px solid {{c.ink}};">
+    <div class="tc-header-row" style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px;">
+      <a class="tc-logo" href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" aria-label="Tempo Continuum, início">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><img src="logos/logo-claro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if><sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><img src="logos/logo-escuro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if>
+        <span style="font-size: 13px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase;">Tempo<br>Continuum</span>
+      </a>
+      <nav class="tc-nav" aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 6px 8px; flex: 1 1 560px; font-size: 15px;">
+        <a href="noticias.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Notícias</a>
+        <a href="politicos.html" aria-current="page" style="text-decoration: none; padding: 8px 14px; border-radius: 999px; background: #8EA612; color: #060308;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Ferramentas</a>
+      </nav>
+      <a class="tc-buscar" href="noticias.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; border: 2px solid {{c.ink}}; border-radius: 999px; padding: 8px 16px; font-size: 14px; min-height: 44px; box-sizing: border-box;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      <button type="button" class="tc-tema" onClick="{{alternarTema}}" aria-label="{{temaLabel}}" style="display: flex; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: {{c.ink}}; color: {{c.bg}}; border-radius: 999px; padding: 8px 16px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        <span class="tc-tema-txt">{{temaTexto}}</span>
+      </button>
+      <button type="button" class="tc-menu-btn" onClick="{{alternarMenu}}" aria-expanded="{{menuAbertoTxt}}" aria-controls="tc-painel" style="display: none; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: transparent; color: {{c.ink}}; border-radius: 999px; padding: 8px 14px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{menuFechado}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></sc-if>
+        <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if>
+        Menu
+      </button>
+    </div>
+    <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}">
+      <nav id="tc-painel" class="tc-painel" aria-label="Menu" style="display: none; border-top: 1px solid {{c.line}}; padding: 4px 16px 12px;">
+        <a href="index.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Início</a>
+        <a href="noticias.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Notícias</a>
+        <a href="politicos.html" aria-current="page" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}}; background: #8EA612; color: #060308;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Cursos</a>
+        <a href="ferramentas.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Ferramentas</a>
+        <a href="noticias.html" onClick="{{fecharMenu}}" style="text-decoration: none; display: flex; align-items: center; gap: 10px; padding: 14px 12px; font-size: 18px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      </nav>
+    </sc-if>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 36px;">
+    <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / <a href="politicos.html" style="text-underline-offset: 3px;">Políticos</a><sc-if value="{{temFicha}}"> / {{f.nome}}</sc-if></p>
+
+    <sc-if value="{{carregando}}">
+      <p style="margin: 0; font-size: 1.1rem; color: {{c.muted}};">Carregando ficha…</p>
+    </sc-if>
+
+    <sc-if value="{{naoEncontrada}}">
+      <div style="display: flex; flex-direction: column; gap: 16px; border-top: 2px solid {{c.ink}}; padding-top: 28px;">
+        <h1 style="margin: 0; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.05;">Ficha não encontrada</h1>
+        <p style="margin: 0; font-size: 1.05rem; line-height: 1.6; color: {{c.muted}}; max-width: 60ch;">O endereço pode estar incompleto ou a ficha ainda não foi publicada.</p>
+        <p style="margin: 0;"><a href="politicos.html" style="text-decoration: none; display: inline-block; background: #8EA612; color: #060308; padding: 12px 22px; font-size: 14px;">Ver todos os políticos</a></p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{temFicha}}">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px 32px;">
+        <sc-if value="{{f.temFoto}}"><img src="{{f.foto}}" alt="Foto de {{f.nome}}" width="128" height="128" style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover; border: 2px solid #060308; flex: none;"></sc-if>
+        <sc-if value="{{f.semFoto}}"><div aria-hidden="true" style="width: 128px; height: 128px; border-radius: 50%; background: #8EA612; color: #060308; border: 2px solid #060308; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; flex: none;">{{f.iniciais}}</div></sc-if>
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+          <p style="margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Ficha de ator político</p>
+          <h1 style="margin: 0; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.02em;"><span style="background: #8EA612; color: #060308; padding: 0 10px;">{{f.nome}}</span></h1>
+          <p style="margin: 0; font-size: 1.15rem;">{{f.subtitulo}}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;">
+            <sc-for list="{{f.selos}}" as="s"><sc-if value="{{s.destaque}}"><span style="background: #8EA612; color: #060308; padding: 4px 10px;">{{s.texto}}</span></sc-if><sc-if value="{{s.comum}}"><span style="border: 1.5px solid {{c.ink}}; padding: 3px 10px;">{{s.texto}}</span></sc-if></sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; border-top: 2px solid {{c.ink}}; padding-top: 28px;">
+        <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+          <div style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 22px;">
+            <h2 style="margin: 0 0 14px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Dados</h2>
+            <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; font-size: 0.92rem;">
+              <sc-for list="{{f.dados}}" as="d"><div><dt style="font-size: 12px; color: {{c.muted}};">{{d.rotulo}}</dt><dd style="margin: 2px 0 0;"><sc-for list="{{d.segs}}" as="g"><sc-if value="{{g.link}}"><a href="{{g.href}}" target="{{g.alvo}}" rel="noopener noreferrer" style="text-underline-offset: 3px;">{{g.t}}</a></sc-if><sc-if value="{{g.forte}}"><b>{{g.t}}</b></sc-if><sc-if value="{{g.enfase}}"><i>{{g.t}}</i></sc-if><sc-if value="{{g.simples}}">{{g.t}}</sc-if></sc-for></dd></div></sc-for>
+            </dl>
+          </div>
+          <p style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: {{c.muted}};">Atualizada em {{f.atualizadoTexto}} · <a href="{{f.historico}}" target="_blank" rel="noopener noreferrer" style="text-underline-offset: 3px;">Ver histórico de edições</a></p>
+        </aside>
+
+        <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px;">
+          <sc-if value="{{f.temResumo}}">
+          <section style="display: flex; flex-direction: column; gap: 10px;">
+            <h2 style="margin: 0; font-size: 1.4rem;">Resumo</h2>
+            <p style="margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 66ch;"><sc-for list="{{f.resumo}}" as="g"><sc-if value="{{g.link}}"><a href="{{g.href}}" target="{{g.alvo}}" rel="noopener noreferrer" style="text-underline-offset: 3px;">{{g.t}}</a></sc-if><sc-if value="{{g.forte}}"><b>{{g.t}}</b></sc-if><sc-if value="{{g.enfase}}"><i>{{g.t}}</i></sc-if><sc-if value="{{g.simples}}">{{g.t}}</sc-if></sc-for></p>
+          </section>
+          </sc-if>
+
+          <sc-if value="{{f.temTrajetoria}}">
+          <section style="display: flex; flex-direction: column; gap: 12px;">
+            <h2 style="margin: 0; font-size: 1.4rem;">Trajetória</h2>
+            <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; border-bottom: 1px solid {{c.line}};">
+              <sc-for list="{{f.trajetoria}}" as="t"><li style="display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid {{c.line}};"><span style="flex: none; width: 92px; font-variant-numeric: tabular-nums;">{{t.quando}}</span><span style="flex: 1; min-width: 0; line-height: 1.5;"><sc-for list="{{t.segs}}" as="g"><sc-if value="{{g.link}}"><a href="{{g.href}}" target="{{g.alvo}}" rel="noopener noreferrer" style="text-underline-offset: 3px;">{{g.t}}</a></sc-if><sc-if value="{{g.forte}}"><b>{{g.t}}</b></sc-if><sc-if value="{{g.enfase}}"><i>{{g.t}}</i></sc-if><sc-if value="{{g.simples}}">{{g.t}}</sc-if></sc-for></span></li></sc-for>
+            </ol>
+          </section>
+          </sc-if>
+
+          <sc-if value="{{f.temEleicoes}}">
+          <section style="display: flex; flex-direction: column; gap: 12px;">
+            <h2 style="margin: 0; font-size: 1.4rem;">Eleições</h2>
+            <div style="overflow-x: auto;">
+              <div role="table" aria-label="Eleições disputadas" style="display: table; border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.92rem; font-variant-numeric: tabular-nums;"><div role="rowgroup" style="display: table-header-group;"><div role="row" style="display: table-row;"><div role="columnheader" style="display: table-cell; padding: 10px 12px 10px 0; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}}; border-bottom: 2px solid {{c.ink}}; text-align: left;">Ano</div><div role="columnheader" style="display: table-cell; padding: 10px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}}; border-bottom: 2px solid {{c.ink}}; text-align: left;">Cargo</div><div role="columnheader" style="display: table-cell; padding: 10px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}}; border-bottom: 2px solid {{c.ink}}; text-align: left;">Partido</div><div role="columnheader" style="display: table-cell; padding: 10px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}}; border-bottom: 2px solid {{c.ink}}; text-align: right;">Votos</div><div role="columnheader" style="display: table-cell; padding: 10px 0 10px 12px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: {{c.muted}}; border-bottom: 2px solid {{c.ink}}; text-align: left;">Resultado</div></div></div><div role="rowgroup" style="display: table-row-group;"><sc-for list="{{f.eleicoes}}" as="e"><div role="row" style="display: table-row;"><div role="cell" style="display: table-cell; padding: 12px 12px 12px 0; border-bottom: 1px solid {{c.line}}; ">{{e.ano}}</div><div role="cell" style="display: table-cell; padding: 12px; border-bottom: 1px solid {{c.line}}; ">{{e.cargo}}</div><div role="cell" style="display: table-cell; padding: 12px; border-bottom: 1px solid {{c.line}}; ">{{e.partido}}</div><div role="cell" style="display: table-cell; padding: 12px; border-bottom: 1px solid {{c.line}}; text-align: right;">{{e.votos}}</div><div role="cell" style="display: table-cell; padding: 12px 0 12px 12px; border-bottom: 1px solid {{c.line}}; "><sc-if value="{{e.destaque}}"><span style="background: #8EA612; color: #060308; padding: 2px 8px;">{{e.rotulo}}</span>{{e.detalhe}}</sc-if><sc-if value="{{e.comum}}">{{e.resultado}}</sc-if></div></div></sc-for></div></div>
+            </div>
+            <sc-if value="{{f.temNota}}"><p style="margin: 0; font-size: 0.82rem; color: {{c.muted}};">{{f.nota}}</p></sc-if>
+          </section>
+          </sc-if>
+
+          <sc-for list="{{f.listas}}" as="l">
+          <section style="display: flex; flex-direction: column; gap: 12px;">
+            <h2 style="margin: 0; font-size: 1.4rem;">{{l.titulo}}</h2>
+            <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.55; max-width: 66ch;">
+              <sc-for list="{{l.itens}}" as="it"><li><sc-for list="{{it.segs}}" as="g"><sc-if value="{{g.link}}"><a href="{{g.href}}" target="{{g.alvo}}" rel="noopener noreferrer" style="text-underline-offset: 3px;">{{g.t}}</a></sc-if><sc-if value="{{g.forte}}"><b>{{g.t}}</b></sc-if><sc-if value="{{g.enfase}}"><i>{{g.t}}</i></sc-if><sc-if value="{{g.simples}}">{{g.t}}</sc-if></sc-for></li></sc-for>
+            </ul>
+          </section>
+          </sc-for>
+
+          <section style="display: flex; flex-direction: column; gap: 12px; border-top: 2px solid {{c.ink}}; padding-top: 20px;">
+            <h2 style="margin: 0; font-size: 1.1rem;">Fontes</h2>
+            <sc-if value="{{f.temFontes}}">
+            <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.88rem; line-height: 1.5; color: {{c.muted}};">
+              <sc-for list="{{f.fontes}}" as="fo"><li><a href="{{fo.url}}" target="_blank" rel="noopener noreferrer">{{fo.titulo}}</a></li></sc-for>
+            </ul>
+            </sc-if>
+            <sc-if value="{{f.semFontes}}"><p style="margin: 0; font-size: 0.88rem; color: {{c.muted}};">Fontes ainda não informadas.</p></sc-if>
+            <p style="margin: 0; font-size: 0.82rem; color: {{c.muted}};">Ficha atualizada em {{f.atualizadoTexto}}. <a href="{{f.historico}}" target="_blank" rel="noopener noreferrer" style="text-underline-offset: 3px;">Ver todas as edições</a>.</p>
+          </section>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 48px 24px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Tempo Continuum</p>
+        <p style="margin: 0; font-size: 1.4rem; line-height: 1.25; max-width: 24ch;"><span style="background: #8EA612; color: #060308; padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Conhecer o passado. Organizar o presente. Construir o futuro.</span></p>
+      </div>
+      <nav aria-label="Rodapé" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 40px; font-size: 14px; align-content: start;">
+        <a href="noticias.html" style="text-decoration: none;">Notícias</a>
+        <a href="dossies.html" style="text-decoration: none;">Dossiês</a>
+        <a href="politicos.html" style="text-decoration: none;">Políticos</a>
+        <a href="cursos.html" style="text-decoration: none;">Cursos</a>
+        <a href="casos.html" style="text-decoration: none;">Casos</a>
+        <a href="index.html" style="text-decoration: none;">Início</a>
+        <a href="documentarios.html" style="text-decoration: none;">Documentários</a>
+        <a href="ferramentas.html" style="text-decoration: none;">Ferramentas</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</template>
+<script src="js/runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { escuro: null, status: 'carregando', ficha: null };
+  }
+  componentDidMount() {
+    var self = this;
+    try {
+      var v = window.localStorage.getItem('tc-tema');
+      if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
+    } catch (e) {}
+    var id = '';
+    try { id = new URLSearchParams(window.location.search).get('id') || ''; } catch (e) {}
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) { this.setState({ status: 'erro' }); return; }
+    fetch('conteudo/politicos/' + id + '.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (f) {
+        f.id = id;
+        self.setState({ ficha: f, status: 'ok' });
+        try { document.title = 'Tempo Continuum — Ficha de ' + f.nome; } catch (e) {}
+      })
+      .catch(function () { self.setState({ status: 'erro' }); });
+  }
+  inline(texto) {
+    var segs = [], re = /\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|\[([^\]]+)\]\(([^)\s]+)\)/g, ultimo = 0, m;
+    var seguro = function (h) { return /^(https?:|mailto:|#|[a-z0-9._\/?=&-]+$)/i.test(h) ? h : '#'; };
+    var simples = function (t) { if (t) segs.push({ t: t, simples: true, link: false, forte: false, enfase: false }); };
+    texto = String(texto || '');
+    while ((m = re.exec(texto))) {
+      simples(texto.slice(ultimo, m.index));
+      if (m[1] || m[2]) segs.push({ t: m[1] || m[2], forte: true, link: false, enfase: false, simples: false });
+      else if (m[3] || m[4]) segs.push({ t: m[3] || m[4], enfase: true, link: false, forte: false, simples: false });
+      else { var h = seguro(m[6]); segs.push({ t: m[5], href: h, alvo: /^https?:/i.test(h) ? '_blank' : '_self', link: true, forte: false, enfase: false, simples: false }); }
+      ultimo = re.lastIndex;
+    }
+    simples(texto.slice(ultimo));
+    return segs;
+  }
+  montar(x) {
+    var self = this;
+    var meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    var data = function (iso) { var p = String(iso || '').slice(0, 10).split('-'); return p.length === 3 ? Number(p[2]) + ' de ' + meses[Number(p[1]) - 1] + ' de ' + p[0] : 'data não informada'; };
+    var rel = function (u) { u = String(u || '').trim(); return /^https?:/i.test(u) ? u : u.replace(/^\/+/, '').replace(/^tempocontinuum\//, ''); };
+    var lista = function (v) { return Array.isArray(v) ? v.filter(function (i) { return i !== null && i !== undefined && i !== ''; }) : []; };
+    var itens = function (v) { return lista(v).map(function (t) { return { segs: self.inline(t) }; }); };
+    var eleicoes = lista(x.eleicoes).slice().sort(function (a, b) { return Number(a.ano) - Number(b.ano); }).map(function (e) {
+      var r = String(e.resultado || ''), i = r.indexOf(' · ');
+      return {
+        ano: e.ano || '', cargo: e.cargo || '', partido: e.partido || '', votos: e.votos || '—', resultado: r,
+        destaque: !!e.destaque, comum: !e.destaque,
+        rotulo: i >= 0 ? r.slice(0, i) : r, detalhe: i >= 0 ? r.slice(i) : ''
+      };
+    });
+    var secoes = [
+      { titulo: x.atuacao_titulo || 'Atuação', itens: itens(x.atuacao) },
+      { titulo: 'Posições declaradas', itens: itens(x.posicoes) },
+      { titulo: 'Controvérsias e processos', itens: itens(x.controversias) }
+    ].filter(function (s) { return s.itens.length > 0; });
+    var fontes = lista(x.fontes).filter(function (fo) { return fo && fo.url; }).map(function (fo) { return { titulo: fo.titulo || fo.url, url: fo.url }; });
+    var nome = x.nome || '';
+    var iniciais = x.iniciais || nome.split(/\s+/).filter(function (p) { return p && p[0] === p[0].toUpperCase(); }).map(function (p) { return p[0]; }).join('').replace(/^(.).*(.)$/, '$1$2');
+    return {
+      nome: nome, iniciais: iniciais, subtitulo: x.subtitulo || '',
+      foto: rel(x.foto), temFoto: !!x.foto, semFoto: !x.foto,
+      selos: lista(x.selos).map(function (s) { return { texto: s.texto || '', destaque: !!s.destaque, comum: !s.destaque }; }),
+      dados: lista(x.dados).map(function (d) { return { rotulo: d.rotulo || '', segs: self.inline(d.valor) }; }),
+      resumo: this.inline(x.resumo), temResumo: !!x.resumo,
+      trajetoria: lista(x.trajetoria).map(function (t) { return { quando: t.quando || '', segs: self.inline(t.fato) }; }),
+      temTrajetoria: lista(x.trajetoria).length > 0,
+      eleicoes: eleicoes, temEleicoes: eleicoes.length > 0,
+      nota: x.nota_eleicoes || '', temNota: !!x.nota_eleicoes,
+      listas: secoes,
+      fontes: fontes, temFontes: fontes.length > 0, semFontes: fontes.length === 0,
+      atualizadoTexto: data(x.atualizado),
+      historico: 'https://github.com/tempocontinuum/tempocontinuum/commits/main/conteudo/politicos/' + x.id + '.json'
+    };
+  }
+  renderVals() {
+    var st = this.state || {};
+    var escuro = (st.escuro !== null && st.escuro !== undefined) ? st.escuro : (this.props.tema ?? 'claro') === 'escuro';
+    var self = this;
+    var c = escuro
+      ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
+      : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    var ok = st.status === 'ok' && !!st.ficha;
+    return {
+      menuAberto: !!st.menuAberto,
+      menuFechado: !st.menuAberto,
+      menuAbertoTxt: st.menuAberto ? 'true' : 'false',
+      alternarMenu: function () { self.setState({ menuAberto: !(self.state && self.state.menuAberto) }); },
+      fecharMenu: function () { self.setState({ menuAberto: false }); },
+      c: c,
+      escuro: escuro,
+      claro: !escuro,
+      temaTexto: escuro ? 'Claro' : 'Escuro',
+      temaLabel: escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro',
+      alternarTema: function () {
+        var novo = !escuro;
+        self.setState({ escuro: novo });
+        try { window.localStorage.setItem('tc-tema', novo ? 'escuro' : 'claro'); } catch (e) {}
+      },
+      carregando: st.status === 'carregando',
+      naoEncontrada: st.status === 'erro',
+      temFicha: ok,
+      f: ok ? this.montar(st.ficha) : {}
+    };
+  }
+}
+iniciarPagina(Component, {"tema": "claro"});
+</script>
+</body>
+</html>
