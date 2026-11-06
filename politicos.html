@@ -81,78 +81,39 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
       <p style="margin: 0; font-size: 1.1rem; line-height: 1.55; color: {{c.muted}}; max-width: 60ch;">Perfis com votações, declarações públicas e os casos em que cada político aparece.</p>
     </div>
 
-    <form style="display: flex; flex-direction: column; gap: 14px; border-top: 2px solid {{c.ink}}; border-bottom: 1px solid {{c.line}}; padding: 20px 0;">
+    <form onSubmit="{{evitarEnvio}}" style="display: flex; flex-direction: column; gap: 14px; border-top: 2px solid {{c.ink}}; border-bottom: 1px solid {{c.line}}; padding: 20px 0;">
       <label for="pq" style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{c.muted}};">Buscar por nome</label>
-      <input id="pq" type="search" placeholder="Nome do político" style="max-width: 520px; font: inherit; font-size: 16px; padding: 12px 14px; border: 2px solid {{c.ink}}; background: {{c.surface}}; color: {{c.ink}}; border-radius: 0;">
-      <div class="tc-chips" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px;">
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; background: #8EA612; color: #060308; border: 1.5px solid #8EA612;">Todos os cargos</a>
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1.5px solid {{c.line}};">Presidente</a>
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1.5px solid {{c.line}};">Senadores</a>
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1.5px solid {{c.line}};">Deputados federais</a>
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1.5px solid {{c.line}};">Governadores</a>
-        <a href="#" style="text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1.5px solid {{c.line}};">Prefeitos</a>
+      <input id="pq" type="search" value="{{q}}" onInput="{{onQ}}" placeholder="Nome, partido ou estado" autocomplete="off" style="max-width: 520px; font: inherit; font-size: 16px; padding: 12px 14px; border: 2px solid {{c.ink}}; background: {{c.surface}}; color: {{c.ink}}; border-radius: 0;">
+      <div class="tc-chips" role="group" aria-label="Filtrar por cargo" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+        <sc-for list="{{filtros}}" as="fl"><sc-if value="{{fl.ativo}}"><button type="button" onClick="{{fl.escolher}}" aria-pressed="true" style="font: inherit; cursor: pointer; padding: 6px 12px; border-radius: 999px; background: #8EA612; color: #060308; border: 1.5px solid #8EA612;">{{fl.nome}}</button></sc-if><sc-if value="{{fl.inativo}}"><button type="button" onClick="{{fl.escolher}}" aria-pressed="false" style="font: inherit; cursor: pointer; padding: 6px 12px; border-radius: 999px; background: transparent; color: {{c.ink}}; border: 1.5px solid {{c.line}};">{{fl.nome}}</button></sc-if></sc-for>
       </div>
     </form>
 
+    <sc-if value="{{carregando}}"><p style="margin: 0; color: {{c.muted}};">Carregando fichas…</p></sc-if>
+    <sc-if value="{{erro}}"><p style="margin: 0; color: {{c.muted}};">Não foi possível carregar as fichas agora. Tente recarregar a página.</p></sc-if>
+    <sc-if value="{{vazio}}">
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+        <p style="margin: 0; font-size: 1.05rem;">Nenhuma ficha encontrada com esses filtros.</p>
+        <button type="button" onClick="{{limpar}}" style="font: inherit; cursor: pointer; background: transparent; color: {{c.ink}}; border: 2px solid {{c.ink}}; padding: 10px 18px; font-size: 14px;">Limpar busca</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{temLista}}">
+    <p style="margin: 0; font-size: 13px; color: {{c.muted}};" aria-live="polite">{{contagem}}</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+      <sc-for list="{{lista}}" as="p">
       <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div aria-hidden="true" style="width: 72px; height: 72px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">JM</div>
-        <h2 style="margin: 0; font-size: 1.15rem;">Jones Manoel</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">Deputado federal eleito · PSOL · PE</p>
-        <p style="margin: 0; font-size: 0.85rem;">Eleito em 2026 · mandato 2027–2031</p>
-        <a href="ficha.html?id=jones-manoel" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver ficha</a>
+        <sc-if value="{{p.temFoto}}"><img src="{{p.foto}}" alt="" width="72" height="72" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover;"></sc-if>
+        <sc-if value="{{p.semFoto}}"><div aria-hidden="true" style="width: 72px; height: 72px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">{{p.iniciais}}</div></sc-if>
+        <h2 style="margin: 0; font-size: 1.15rem;">{{p.nome}}</h2>
+        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">{{p.linha}}</p>
+        <sc-if value="{{p.temChamada}}"><p style="margin: 0; font-size: 0.85rem;">{{p.chamada}}</p></sc-if>
+        <a href="{{p.link}}" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver ficha<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);"> de {{p.nome}}</span></a>
       </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div aria-hidden="true" style="width: 72px; height: 72px; border-radius: 50%; background: #8EA612; color: #060308; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">MH</div>
-        <h2 style="margin: 0; font-size: 1.15rem;">Marcel van Hattem</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">Senador eleito · Novo · RS</p>
-        <p style="margin: 0; font-size: 0.85rem;">Eleito em 2026 · mandato 2027–2035</p>
-        <a href="ficha.html?id=marcel-van-hattem" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver ficha</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
-      <article style="background: {{c.surface}}; border: 1px solid {{c.line}}; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: {{c.line}};"></div>
-        <h2 style="margin: 0; font-size: 1.15rem;">[Nome do político]</h2>
-        <p style="margin: 0; font-size: 0.85rem; color: {{c.muted}};">[Cargo] · [Partido] · [UF]</p>
-        <p style="margin: 0; font-size: 0.85rem;">[N] casos acompanhados</p>
-        <a href="#" style="font-size: 14px; text-underline-offset: 4px; margin-top: auto;">Ver perfil</a>
-      </article>
+      </sc-for>
     </div>
-    <a href="#" style="align-self: center; text-decoration: none; border: 2px solid {{c.ink}}; padding: 12px 24px; font-size: 14px;">Carregar mais perfis</a>
+    <sc-if value="{{temMais}}"><button type="button" onClick="{{mostrarMais}}" style="align-self: center; font: inherit; cursor: pointer; background: transparent; color: {{c.ink}}; border: 2px solid {{c.ink}}; padding: 12px 24px; font-size: 14px;">Carregar mais perfis ({{restantes}})</button></sc-if>
+    </sc-if>
   </main>
 
   <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
@@ -180,13 +141,34 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { escuro: null };
+    this.state = { escuro: null, status: 'carregando', fichas: [], q: '', filtro: 'todos', limite: 12 };
   }
   componentDidMount() {
+    var self = this;
     try {
       var v = window.localStorage.getItem('tc-tema');
       if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
     } catch (e) {}
+    fetch('dados/politicos.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (l) { self.setState({ fichas: Array.isArray(l) ? l : [], status: 'ok' }); })
+      .catch(function () { self.setState({ status: 'erro' }); });
+  }
+  filtros() {
+    return [['todos', 'Todos os cargos'], ['Presidente', 'Presidente'], ['Senador', 'Senadores'], ['Deputado federal', 'Deputados federais'], ['Governador', 'Governadores'], ['Prefeito', 'Prefeitos'], ['outros', 'Outros cargos']];
+  }
+  lista() {
+    var st = this.state || {};
+    var norm = function (s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); };
+    var fixos = this.filtros().map(function (f) { return f[0]; });
+    var palavras = norm(st.q).split(/\s+/).filter(Boolean);
+    var filtro = st.filtro || 'todos';
+    return (st.fichas || []).filter(function (f) {
+      if (filtro === 'outros' && fixos.indexOf(f.categoria) >= 0) return false;
+      if (filtro !== 'todos' && filtro !== 'outros' && f.categoria !== filtro) return false;
+      var t = norm([f.nome, f.partido, f.uf, f.cargo_curto, f.categoria].join(' '));
+      return palavras.every(function (w) { return t.indexOf(w) >= 0; });
+    });
   }
   renderVals() {
     var escuro = (this.state && this.state.escuro !== null && this.state.escuro !== undefined)
@@ -196,7 +178,37 @@ class Component extends DCLogic {
     var c = escuro
       ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
       : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    var st = this.state || {};
+    var rel = function (u) { u = String(u || '').trim(); return /^https?:/i.test(u) ? u : u.replace(/^\/+/, '').replace(/^tempocontinuum\//, ''); };
+    var filtrados = this.lista();
+    var limite = st.limite || 12;
+    var fichas = st.fichas || [];
+    var fixos = this.filtros().map(function (f) { return f[0]; });
+    var temOutros = fichas.some(function (f) { return fixos.indexOf(f.categoria) < 0; });
+    var filtro = st.filtro || 'todos';
+    var filtros = this.filtros().filter(function (f) { return f[0] !== 'outros' || temOutros || filtro === 'outros'; }).map(function (f) {
+      var ativo = f[0] === filtro;
+      return { nome: f[1], ativo: ativo, inativo: !ativo, escolher: function () { self.setState({ filtro: f[0], limite: 12 }); } };
+    });
+    var lista = filtrados.slice(0, limite).map(function (f) {
+      return {
+        nome: f.nome, iniciais: f.iniciais || '', foto: rel(f.foto), temFoto: !!f.foto, semFoto: !f.foto,
+        linha: [f.cargo_curto, f.partido, f.uf].filter(Boolean).join(' · '),
+        chamada: f.chamada || '', temChamada: !!f.chamada,
+        link: 'ficha.html?id=' + encodeURIComponent(f.id)
+      };
+    });
+    var ok = st.status === 'ok';
     return {
+      carregando: st.status === 'carregando', erro: st.status === 'erro',
+      vazio: ok && filtrados.length === 0, temLista: ok && filtrados.length > 0,
+      contagem: filtrados.length === 1 ? '1 ficha' : filtrados.length + ' fichas',
+      lista: lista, filtros: filtros, q: st.q || '',
+      onQ: function (e) { self.setState({ q: e.target.value, limite: 12 }); },
+      evitarEnvio: function (e) { e.preventDefault(); },
+      limpar: function () { self.setState({ q: '', filtro: 'todos', limite: 12 }); },
+      temMais: filtrados.length > limite, restantes: filtrados.length - limite,
+      mostrarMais: function () { self.setState({ limite: limite + 12 }); },
       menuAberto: !!(this.state && this.state.menuAberto),
       menuFechado: !(this.state && this.state.menuAberto),
       menuAbertoTxt: (this.state && this.state.menuAberto) ? 'true' : 'false',
