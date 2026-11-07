@@ -74,7 +74,7 @@ collections:
       - name: tags
         label: Tags
         widget: list
-        hint: 'Palavras pelas quais a matéria será encontrada na busca. Uma por item, em minúsculas. Reaproveite as tags que já existem.'
+        hint: 'Palavras pelas quais a matéria será encontrada na busca. Uma por item, em minúsculas. Reaproveite as tags que já existem. Para uma subtag, use barra: violência/contra indígenas (a tag é violência e a subtag é contra indígenas).'
         min: 1
         max: 8
       - name: autor

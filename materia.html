@@ -152,6 +152,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -232,7 +233,7 @@ class Component extends DCLogic {
       foto: rel(mat.foto), temFoto: !!mat.foto, legenda: mat.legenda || '', credito: mat.credito || '', temCredito: !!mat.credito
     } : {};
     var tags = (mat && mat.tags || []).map(function (t) {
-      return { nome: t, ir: function () { try { window.localStorage.setItem('tc-busca-tag', t); } catch (e) {} } };
+      return { nome: window.TCTags.rotulo(t), ir: function () { try { window.localStorage.setItem('tc-busca-tag', window.TCTags.canon(t)); } catch (e) {} } };
     });
     return {
       menuAberto: !!st.menuAberto,

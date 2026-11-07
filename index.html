@@ -326,6 +326,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -361,7 +362,7 @@ class Component extends DCLogic {
     var meses = ['jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
     var fmtData = function (iso) { var p = String(iso || '').slice(0, 10).split('-'); return p.length === 3 ? Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0] : ''; };
     var noticias = ((this.state && this.state.remoto) || this.exemplos()).slice().sort(function (x, y) { return String(x.data) < String(y.data) ? 1 : -1; }).map(function (n) {
-      return { titulo: n.titulo, linha: n.linha || '', editoria: n.editoria || 'Notícia', dataTexto: fmtData(n.data), tagPrincipal: (n.tags || [])[0] || (n.editoria || '').toLowerCase(),
+      return { titulo: n.titulo, linha: n.linha || '', editoria: n.editoria || 'Notícia', dataTexto: fmtData(n.data), tagPrincipal: (n.tags || [])[0] ? window.TCTags.rotulo(n.tags[0]) : (n.editoria || '').toLowerCase(),
         link: 'materia.html?id=' + encodeURIComponent(n.id), foto: n.foto || '', temFoto: !!n.foto, semFoto: !n.foto, destaque: !!n.destaque };
     });
     var iPrincipal = Math.max(0, noticias.findIndex(function (n) { return n.destaque; }));

@@ -171,6 +171,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -216,12 +217,13 @@ class Component extends DCLogic {
     var meses = ['jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
     var fmt = function (iso) { var p = iso.split('-'); return Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0]; };
     var sel = st.tags || [];
-    var selN = sel.map(norm);
+    var T = window.TCTags;
+    var selN = sel.map(function (x) { return norm(T.canon(x)); });
     var toggle = function (nome) {
       return function () {
-        var k = norm(nome);
+        var k = norm(T.canon(nome));
         var atual = (self.state.tags || []).slice();
-        var i = atual.map(norm).indexOf(k);
+        var i = atual.map(function (x) { return norm(T.canon(x)); }).indexOf(k);
         if (i >= 0) atual.splice(i, 1); else atual.push(nome);
         self.setState({ tags: atual });
       };
@@ -231,27 +233,24 @@ class Component extends DCLogic {
     var filtrados = dados.filter(function (n) {
       if (st.de && n.data < st.de) return false;
       if (st.ate && n.data > st.ate) return false;
-      var chaves = n.tags.map(norm);
-      if (!selN.every(function (k) { return chaves.indexOf(k) >= 0; })) return false;
-      var texto = norm([n.titulo, n.linha, n.editoria, n.tags.join(' ')].join(' '));
+      if (!T.passa(n.tags, sel)) return false;
+      var texto = norm([n.titulo, n.linha, n.editoria, n.tags.map(T.rotulo).join(' ')].join(' '));
       return palavras.every(function (w) { return texto.indexOf(w) >= 0; });
     });
-    var contas = {};
-    dados.forEach(function (n) { n.tags.forEach(function (t) { contas[t] = (contas[t] || 0) + 1; }); });
-    var todasTags = Object.keys(contas).sort(function (a, b) { return contas[b] - contas[a] || a.localeCompare(b, 'pt'); }).map(function (t) {
-      var ativa = selN.indexOf(norm(t)) >= 0;
-      return { nome: t, n: contas[t], ativa: ativa, inativa: !ativa, toggle: toggle(t) };
+    var todasTags = T.contar(dados.map(function (n) { return n.tags; })).map(function (x) {
+      var ativa = selN.indexOf(norm(x.tag)) >= 0;
+      return { nome: x.rotulo, n: x.n, sub: x.sub, ativa: ativa, inativa: !ativa, toggle: toggle(x.tag) };
     });
     var itens = filtrados.map(function (n) {
       return {
         id: n.id, titulo: n.titulo, linha: n.linha, editoria: n.editoria, dataTexto: fmt(n.data),
         link: 'materia.html?id=' + encodeURIComponent(n.id), foto: n.foto || '', temFoto: !!n.foto, semFoto: !n.foto,
-        tags: n.tags.map(function (t) { var a = selN.indexOf(norm(t)) >= 0; return { nome: t, ativa: a, inativa: !a, toggle: toggle(t) }; })
+        tags: n.tags.map(function (t) { var a = selN.indexOf(norm(T.canon(t))) >= 0; return { nome: T.rotulo(t), ativa: a, inativa: !a, toggle: toggle(t) }; })
       };
     });
     var temFiltros = !!(palavras.length || sel.length || st.de || st.ate);
     var contagem = temFiltros
-      ? itens.length + ' de ' + dados.length + ' notícias' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.join(' + ') : '')
+      ? itens.length + ' de ' + dados.length + ' notícias' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.map(T.rotulo).join(' + ') : '')
       : dados.length + ' notícias';
     return {
       menuAberto: !!(this.state && this.state.menuAberto),

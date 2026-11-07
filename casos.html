@@ -181,6 +181,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -207,13 +208,14 @@ class Component extends DCLogic {
     var meses = ['jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
     var fmt = function (iso) { var p = iso.split('-'); return Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0]; };
     var sel = st.tags || [];
-    var selN = sel.map(norm);
+    var T = window.TCTags;
+    var selN = sel.map(function (x) { return norm(T.canon(x)); });
     var situacao = st.situacao || 'Todos';
     var toggle = function (nome) {
       return function () {
-        var k = norm(nome);
+        var k = norm(T.canon(nome));
         var atual = (self.state.tags || []).slice();
-        var i = atual.map(norm).indexOf(k);
+        var i = atual.map(function (x) { return norm(T.canon(x)); }).indexOf(k);
         if (i >= 0) atual.splice(i, 1); else atual.push(nome);
         self.setState({ tags: atual });
       };
@@ -221,9 +223,8 @@ class Component extends DCLogic {
     var dados = this.dados().slice().sort(function (a, b) { return a.atualizado < b.atualizado ? 1 : -1; });
     var palavras = norm(st.q).split(/\s+/).filter(Boolean);
     var passaTextoETags = function (k) {
-      var chaves = k.tags.map(norm);
-      if (!selN.every(function (x) { return chaves.indexOf(x) >= 0; })) return false;
-      var texto = norm([k.titulo, k.resumo, k.etapa, k.envolvidos.join(' '), k.tags.join(' ')].join(' '));
+      if (!T.passa(k.tags, sel)) return false;
+      var texto = norm([k.titulo, k.resumo, k.etapa, k.envolvidos.join(' '), k.tags.map(T.rotulo).join(' ')].join(' '));
       return palavras.every(function (w) { return texto.indexOf(w) >= 0; });
     };
     var base = dados.filter(passaTextoETags);
@@ -233,23 +234,21 @@ class Component extends DCLogic {
       var ativa = s === situacao;
       return { nome: s, n: n, ativa: ativa, inativa: !ativa, escolher: function () { self.setState({ situacao: s }); } };
     });
-    var contas = {};
-    dados.forEach(function (k) { k.tags.forEach(function (t) { contas[t] = (contas[t] || 0) + 1; }); });
-    var todasTags = Object.keys(contas).sort(function (a, b) { return contas[b] - contas[a] || a.localeCompare(b, 'pt'); }).map(function (t) {
-      var ativa = selN.indexOf(norm(t)) >= 0;
-      return { nome: t, n: contas[t], ativa: ativa, inativa: !ativa, toggle: toggle(t) };
+    var todasTags = T.contar(dados.map(function (k) { return k.tags; })).map(function (x) {
+      var ativa = selN.indexOf(norm(x.tag)) >= 0;
+      return { nome: x.rotulo, n: x.n, sub: x.sub, ativa: ativa, inativa: !ativa, toggle: toggle(x.tag) };
     });
     var itens = filtrados.map(function (k) {
       return {
         id: k.id, titulo: k.titulo, resumo: k.resumo, etapa: k.etapa, docs: k.docs,
         andamento: k.status === 'Em andamento', julgamento: k.status === 'Em julgamento', encerrado: k.status === 'Encerrado',
         abertoTexto: fmt(k.aberto), atualizadoTexto: fmt(k.atualizado), envolvidosTexto: k.envolvidos.join(' · '),
-        tags: k.tags.map(function (t) { var a = selN.indexOf(norm(t)) >= 0; return { nome: t, ativa: a, inativa: !a, toggle: toggle(t) }; })
+        tags: k.tags.map(function (t) { var a = selN.indexOf(norm(T.canon(t))) >= 0; return { nome: T.rotulo(t), ativa: a, inativa: !a, toggle: toggle(t) }; })
       };
     });
     var temFiltros = !!(palavras.length || sel.length || situacao !== 'Todos');
     var contagem = temFiltros
-      ? itens.length + ' de ' + dados.length + ' casos' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.join(' + ') : '')
+      ? itens.length + ' de ' + dados.length + ' casos' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.map(T.rotulo).join(' + ') : '')
       : dados.length + ' casos';
     return {
       menuAberto: !!(this.state && this.state.menuAberto),
