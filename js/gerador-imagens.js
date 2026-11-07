@@ -6,6 +6,8 @@
 
   var FONTE = '"Gotham Medium", "Gotham", "GothamMedium", "Montserrat", Arial, sans-serif';
   var CHAVE = 'tc-gerador-imagens';
+  var PISO_FONTE = 16;        // menor fonte permitida quando a pessoa fixa o número de linhas
+  var MAX_LINHAS_OPCAO = 8;   // até quantas linhas o seletor oferece
 
   // =========================================================================
   // Utilidades de desenho
@@ -328,10 +330,19 @@
     // 4. Título e rodapé
     if (L.titulo && D.titulo && D.titulo.trim()) {
       var t = L.titulo;
-      var r = ajustarTexto(ctx, [D.titulo.trim()], t, { max: t.fonte_max, min: t.fonte_min, entrelinha: t.entrelinha, maxLinhas: t.max_linhas, balancear: true });
+      // Se a pessoa escolheu o número de linhas, a fonte pode descer abaixo do mínimo do formato
+      var linhasEscolhidas = +D.linhasTitulo || 0;
+      var minimo = linhasEscolhidas ? Math.min(t.fonte_min, PISO_FONTE) : t.fonte_min;
+      var r = ajustarTexto(ctx, [D.titulo.trim()], t, {
+        max: t.fonte_max, min: minimo, entrelinha: t.entrelinha,
+        maxLinhas: linhasEscolhidas || t.max_linhas, balancear: true
+      });
       desenharBloco(ctx, r, t, [t.cor]);
-      rel.titulo = { fonte: r.fonte, linhas: r.linhas.length, cortado: r.cortado };
-      if (r.cortado) rel.avisos.push('o título não coube nem no tamanho mínimo; o final foi cortado com "…"');
+      rel.titulo = { fonte: r.fonte, linhas: r.linhas.length, cortado: r.cortado, limite: linhasEscolhidas || t.max_linhas };
+      if (r.cortado) rel.avisos.push(linhasEscolhidas
+        ? 'o título não coube em ' + linhasEscolhidas + (linhasEscolhidas === 1 ? ' linha' : ' linhas') + ' nem com a menor fonte; o final foi cortado com "…"'
+        : 'o título não coube nem no tamanho mínimo; o final foi cortado com "…"');
+      else if (r.fonte < t.fonte_min) rel.avisos.push('para caber em ' + linhasEscolhidas + (linhasEscolhidas === 1 ? ' linha' : ' linhas') + ', a fonte ficou menor que o recomendado para este formato (' + t.fonte_min + ' px)');
       else if (r.quebrouPalavra) rel.avisos.push('uma palavra do título é longa demais e foi quebrada');
     }
     var rod = (D.rodape || []).map(function (l) { return String(l || '').trim(); }).filter(Boolean);
@@ -378,14 +389,14 @@
     var estado = {
       layout: 'post-retrato', titulo: 'Escreva aqui o título: ele se ajusta sozinho à área demarcada',
       selo: '', rodape1: '', rodape2: '', link: '', nome: '',
-      focoX: 50, focoY: 50, escala: 1, guias: false, ajustes: {}
+      focoX: 50, focoY: 50, escala: 1, guias: false, ajustes: {}, linhas: 0
     };
     try { Object.assign(estado, JSON.parse(localStorage.getItem(CHAVE) || '{}')); } catch (e) {}
     function guardar() { try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) {} }
 
     function dados() {
       return {
-        titulo: estado.titulo, selo: estado.selo, rodape: [estado.rodape1, estado.rodape2],
+        titulo: estado.titulo, linhasTitulo: estado.linhas, selo: estado.selo, rodape: [estado.rodape1, estado.rodape2],
         link: estado.link, fundo: imagens.fundo, focoX: estado.focoX, focoY: estado.focoY,
         logos: imagens.logos.map(function (l) { return l.img; })
       };
@@ -418,7 +429,7 @@
       var caixa = $('gr-relatorio');
       caixa.innerHTML = '';
       function add(t, cls) { var d = document.createElement('p'); d.textContent = t; if (cls) d.className = cls; caixa.appendChild(d); }
-      if (rel && rel.titulo) add('Título em ' + rel.titulo.fonte + ' px, ' + rel.titulo.linhas + (rel.titulo.linhas === 1 ? ' linha' : ' linhas') + '.');
+      if (rel && rel.titulo) add('Título em ' + Math.round(rel.titulo.fonte) + ' px, ' + rel.titulo.linhas + (rel.titulo.linhas === 1 ? ' linha' : ' linhas') + ' (máximo ' + rel.titulo.limite + ').');
       (rel && rel.avisos || []).forEach(function (a) { add('Atenção: ' + a + '.', 'gr-aviso'); });
       if (extra) add(extra.t, extra.cls);
     }
@@ -436,7 +447,25 @@
     ligar('gr-rodape2', 'rodape2'); ligar('gr-link', 'link'); ligar('gr-nome', 'nome');
     contar();
 
-    $('gr-formato').addEventListener('change', function (ev) { estado.layout = ev.target.value; desenharCamadas(); agendar(); });
+    $('gr-formato').addEventListener('change', function (ev) { estado.layout = ev.target.value; desenharCamadas(); opcoesLinhas(); agendar(); });
+
+    // ---- Número de linhas do título
+    function opcoesLinhas() {
+      var sel = $('gr-linhas'), L = porNome[estado.layout];
+      sel.innerHTML = '';
+      var auto = document.createElement('option');
+      auto.value = '0';
+      auto.textContent = 'Automático (até ' + L.titulo.max_linhas + ' neste formato)';
+      sel.appendChild(auto);
+      for (var n = 1; n <= MAX_LINHAS_OPCAO; n++) {
+        var o = document.createElement('option');
+        o.value = String(n);
+        o.textContent = n === 1 ? '1 linha' : 'Até ' + n + ' linhas';
+        sel.appendChild(o);
+      }
+      sel.value = String(estado.linhas || 0);
+    }
+    $('gr-linhas').addEventListener('change', function (ev) { estado.linhas = +ev.target.value; agendar(); });
     $('gr-guias').checked = !!estado.guias;
     $('gr-guias').addEventListener('change', function (ev) { estado.guias = ev.target.checked; agendar(); });
     $('gr-escala').value = String(estado.escala);
@@ -614,7 +643,7 @@
         $('gr-formato').appendChild(o);
       });
       $('gr-formato').value = estado.layout;
-      mostrarFundo(); desenharLogos(); desenharCamadas();
+      mostrarFundo(); desenharLogos(); desenharCamadas(); opcoesLinhas();
       var fontes = document.fonts ? Promise.all([
         document.fonts.load('500 40px "Gotham Medium"'), document.fonts.load('500 40px Montserrat')
       ]).catch(function () {}) : Promise.resolve();
