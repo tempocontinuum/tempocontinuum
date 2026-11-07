@@ -1,10 +1,11 @@
 {
-  "comentario": "Formatos do Gerador de imagens (gerador-de-imagens.html). Medidas em pixels; x e y são o canto superior esquerdo de cada área.",
+  "comentario": "Formatos do Gerador de imagens (gerador-de-imagens.html). Medidas em pixels; x e y são o canto superior esquerdo de cada área. \"exportar\" (opcional) define o tamanho do PNG baixado; o desenho é ampliado proporcionalmente.",
   "layouts": [
     {
       "nome": "post-retrato",
-      "rotulo": "Post retrato (Instagram)",
+      "rotulo": "Post 4:5 (Instagram)",
       "largura": 1080, "altura": 1350, "cor_fundo": "#060308",
+      "exportar": { "largura": 2000, "altura": 2500 },
       "camadas": [
         { "tipo": "gradiente", "x": 0, "y": 0, "largura": 1080, "altura": 300, "cor": "#060308", "alpha": 0.75, "cor2": "#060308", "alpha2": 0, "direcao": "para baixo" },
         { "tipo": "gradiente", "x": 0, "y": 380, "largura": 1080, "altura": 970, "cor": "#060308", "alpha": 0, "cor2": "#060308", "alpha2": 0.95, "direcao": "para baixo" },
@@ -54,7 +55,7 @@
     },
     {
       "nome": "compartilhamento",
-      "rotulo": "Prévia de link (1200×630)",
+      "rotulo": "Prévia de link",
       "largura": 1200, "altura": 630, "cor_fundo": "#060308",
       "camadas": [
         { "tipo": "cor", "x": 0, "y": 0, "largura": 720, "altura": 630, "cor": "#060308", "alpha": 0.84 },

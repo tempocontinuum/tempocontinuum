@@ -422,7 +422,8 @@
       previa.style.height = Math.floor(L.altura * disp) + 'px';
       var esc = Math.min(1, disp * (window.devicePixelRatio || 1));
       var rel = renderizar(previa, L, dados(), { escala: esc, guias: estado.guias });
-      $('gr-medidas').textContent = L.largura + ' × ' + L.altura + ' px';
+      var ex = tamanhoExportado(L, 1);
+      $('gr-medidas').textContent = 'Exporta em ' + ex.largura + ' × ' + ex.altura + ' px';
       relatorio(rel);
     }
     function relatorio(rel, extra) {
@@ -447,7 +448,7 @@
     ligar('gr-rodape2', 'rodape2'); ligar('gr-link', 'link'); ligar('gr-nome', 'nome');
     contar();
 
-    $('gr-formato').addEventListener('change', function (ev) { estado.layout = ev.target.value; desenharCamadas(); opcoesLinhas(); agendar(); });
+    $('gr-formato').addEventListener('change', function (ev) { estado.layout = ev.target.value; desenharCamadas(); opcoesLinhas(); opcoesEscala(); agendar(); });
 
     // ---- Número de linhas do título
     function opcoesLinhas() {
@@ -468,6 +469,18 @@
     $('gr-linhas').addEventListener('change', function (ev) { estado.linhas = +ev.target.value; agendar(); });
     $('gr-guias').checked = !!estado.guias;
     $('gr-guias').addEventListener('change', function (ev) { estado.guias = ev.target.checked; agendar(); });
+    // Tamanho do PNG baixado: o "exportar" do formato (se houver) vezes a resolução escolhida
+    function tamanhoExportado(L, mult) {
+      var base = L.exportar || { largura: L.largura, altura: L.altura };
+      return { largura: Math.round(base.largura * mult), altura: Math.round(base.altura * mult), escala: base.largura / L.largura * mult };
+    }
+    function opcoesEscala() {
+      var L = porNome[estado.layout], sel = $('gr-escala');
+      [1, 2].forEach(function (m, i) {
+        var t = tamanhoExportado(L, m);
+        sel.options[i].textContent = (m === 1 ? 'Padrão' : '2× (mais nítida)') + ' · ' + t.largura + ' × ' + t.altura + ' px';
+      });
+    }
     $('gr-escala').value = String(estado.escala);
     $('gr-escala').addEventListener('change', function (ev) { estado.escala = +ev.target.value; guardar(); });
 
@@ -595,12 +608,13 @@
     function nomeArquivo(L) {
       var base = (estado.nome || estado.titulo || 'imagem').normalize('NFD').replace(/[̀-ͯ]/g, '')
         .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'imagem';
-      return base + '-' + L.nome + (estado.escala !== 1 ? '@' + estado.escala + 'x' : '') + '.png';
+      var t = tamanhoExportado(L, estado.escala);
+      return base + '-' + L.nome + '-' + t.largura + 'x' + t.altura + '.png';
     }
     function baixar(nomeLayout) {
       var L = aplicarAjustes(porNome[nomeLayout], estado.ajustes);
       var tela = document.createElement('canvas');
-      var rel = renderizar(tela, L, dados(), { escala: estado.escala });
+      var rel = renderizar(tela, L, dados(), { escala: tamanhoExportado(L, estado.escala).escala });
       return new Promise(function (ok, falha) {
         tela.toBlob(function (blob) {
           if (!blob) return falha(new Error('o navegador não conseguiu gerar o PNG'));
@@ -639,11 +653,12 @@
       $('gr-formato').innerHTML = '';
       LAYOUTS.forEach(function (L) {
         var o = document.createElement('option');
-        o.value = L.nome; o.textContent = L.rotulo + ' · ' + L.largura + '×' + L.altura;
+        var t = tamanhoExportado(L, 1);
+        o.value = L.nome; o.textContent = L.rotulo + ' · ' + t.largura + '×' + t.altura;
         $('gr-formato').appendChild(o);
       });
       $('gr-formato').value = estado.layout;
-      mostrarFundo(); desenharLogos(); desenharCamadas(); opcoesLinhas();
+      mostrarFundo(); desenharLogos(); desenharCamadas(); opcoesLinhas(); opcoesEscala();
       var fontes = document.fonts ? Promise.all([
         document.fonts.load('500 40px "Gotham Medium"'), document.fonts.load('500 40px Montserrat')
       ]).catch(function () {}) : Promise.resolve();
