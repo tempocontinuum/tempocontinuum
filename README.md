@@ -18,6 +18,7 @@ Cada matéria salva no editor vira um pull request com o rótulo de status (Rasc
 - `dados/noticias.json` e `dados/politicos.json`: índices gerados por `scripts/gerar-indice.py`. A Home e a página Notícias leem o primeiro; a página Políticos, o segundo.
 - `imagens/materias/` e `imagens/politicos/`: fotos enviadas pelo editor.
 - `admin/`: o editor de matérias e fichas e a sua configuração (`config.yml`).
+- `gerador-de-imagens.html` e `js/gerador-imagens.js`: o Gerador de imagens (Ferramentas). Monta a imagem num canvas no navegador de quem usa; nada é enviado ao site. Os formatos e as áreas de cada um ficam em `dados/layouts-imagens.json`. O QR code usa `js/vendor/qrcode-generator.js` (MIT).
 - `.github/workflows/publicar-site.yml`: gera os índices e publica o site a cada mudança no `main`.
 
 ## Como lançar ou editar fichas de políticos

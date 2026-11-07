@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempo Continuum — Gerador de imagens</title>
+<meta name="description" content="Monte imagens para redes sociais e prévias de link com título que se ajusta sozinho, camadas, logos e QR code. Tudo é feito no seu navegador.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap">
+<style>
+body{margin:0;font-family:"Gotham Medium","Gotham","GothamMedium","Montserrat","Helvetica Neue",Arial,sans-serif;font-weight:500}
+h1,h2,h3,h4,p{font-weight:500}
+a{color:inherit}a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (max-width: 760px){
+.tc-header-row{flex-wrap:nowrap !important;gap:8px !important;padding:10px 16px !important}
+.tc-nav,.tc-buscar{display:none !important}
+.tc-logo{margin-right:auto;min-width:0}
+.tc-tema-txt{display:none}
+.tc-tema{padding:8px 12px !important}
+.tc-menu-btn{display:flex !important}
+.tc-painel{display:block !important}
+.tc-chips{flex-wrap:nowrap !important;overflow-x:auto;padding-bottom:8px;margin-right:-16px;padding-right:16px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.tc-chips>*{flex:none}
+main{padding-left:16px !important;padding-right:16px !important;gap:32px !important}
+footer>div{padding-left:16px !important;padding-right:16px !important}
+}
+</style>
+<style>
+/* ---- Gerador de imagens ---- */
+:root{--gr-bg:#F2EEE9;--gr-sup:#DED5CA;--gr-ink:#060308;--gr-muted:#302D29;--gr-line:rgba(48,45,41,.28);--gr-aviso:#9A4A00;--gr-erro:#B3261E;--gr-ok:#3F4C05}
+html[data-tema="escuro"]{--gr-bg:#060308;--gr-sup:#302D29;--gr-ink:#F2EEE9;--gr-muted:#DED5CA;--gr-line:rgba(222,213,202,.3);--gr-aviso:#F0A35E;--gr-erro:#FF8A80;--gr-ok:#B8D33A}
+.gr{display:grid;grid-template-columns:minmax(300px,400px) minmax(0,1fr);gap:32px;align-items:start;color:var(--gr-ink)}
+.gr[hidden]{display:none}
+.gr-controles{display:flex;flex-direction:column;gap:24px;min-width:0}
+.gr-grupo{border:0;border-top:2px solid var(--gr-ink);margin:0;padding:16px 0 0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.gr-grupo>legend,.gr-grupo>summary{font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:0 8px 0 0;float:left;width:100%}
+details.gr-grupo>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.gr-grupo>summary::-webkit-details-marker{display:none}
+details.gr-grupo>summary::after{content:"+";font-size:16px}
+details.gr-grupo[open]>summary::after{content:"–"}
+details.gr-grupo>div{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.gr-campo{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--gr-muted);min-width:0}
+.gr-campo .gr-rotulo{display:flex;justify-content:space-between;gap:8px}
+.gr input[type=text],.gr input[type=url],.gr textarea,.gr select{font:inherit;font-size:16px;padding:10px 12px;border:2px solid var(--gr-ink);background:var(--gr-bg);color:var(--gr-ink);border-radius:0;min-width:0;width:100%;box-sizing:border-box}
+.gr textarea{resize:vertical;min-height:96px;line-height:1.4}
+.gr input[type=range]{width:100%;accent-color:#8EA612}
+.gr input[type=checkbox]{accent-color:#8EA612;width:18px;height:18px;margin:0;flex:none}
+.gr-dupla{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gr button{font:inherit;font-size:14px;padding:10px 14px;border:2px solid var(--gr-ink);background:transparent;color:var(--gr-ink);border-radius:0;cursor:pointer}
+.gr button.gr-principal{background:#8EA612;border-color:#8EA612;color:#060308;font-size:16px;padding:12px 16px}
+.gr button:hover{text-decoration:underline;text-underline-offset:3px}
+.gr button:focus-visible,.gr input:focus-visible,.gr textarea:focus-visible,.gr select:focus-visible,.gr-zona:focus-visible{outline:2px solid #8EA612;outline-offset:2px}
+.gr-zona{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px dashed var(--gr-muted);cursor:pointer;background:var(--gr-bg)}
+.gr-zona.gr-arrastando{border-color:#8EA612;border-style:solid}
+.gr-zona img,.gr-item img{width:64px;height:48px;object-fit:contain;flex:none;background:repeating-conic-gradient(rgba(128,128,128,.25) 0 25%,transparent 0 50%) 0 0/12px 12px}
+.gr-vazio{width:64px;height:48px;display:grid;place-items:center;border:1px solid var(--gr-line);flex:none;font-size:20px}
+.gr-zona span,.gr-item-nome{font-size:13px;color:var(--gr-muted);overflow-wrap:anywhere}
+.gr-item{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;padding:8px;background:var(--gr-sup)}
+.gr-item-acoes{display:flex;gap:4px}
+.gr .gr-item-acoes button{padding:4px 9px;font-size:13px;border-width:1.5px}
+.gr-camada{display:flex;flex-direction:column;gap:6px;padding:10px;background:var(--gr-sup)}
+.gr-camada-topo{display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer}
+.gr-amostra{width:20px;height:20px;border:1px solid var(--gr-line);flex:none}
+.gr-slider{display:grid;grid-template-columns:72px 1fr 42px;gap:8px;align-items:center;font-size:12px;color:var(--gr-muted)}
+.gr-oculta .gr-slider{opacity:.35;pointer-events:none}
+.gr-checar{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.gr-dica{margin:0;font-size:13px;color:var(--gr-muted);line-height:1.5}
+.gr-palco{position:sticky;top:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.gr-quadro{background:var(--gr-sup);padding:20px;display:flex;justify-content:center;align-items:center;min-height:240px}
+.gr-quadro canvas{display:block;max-width:100%;box-shadow:0 10px 32px rgba(0,0,0,.28)}
+.gr-barra{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;font-size:13px;color:var(--gr-muted)}
+#gr-relatorio{min-height:22px;font-size:14px}
+#gr-relatorio p{margin:0 0 4px}
+#gr-relatorio .gr-aviso{color:var(--gr-aviso)}
+#gr-relatorio .gr-erro{color:var(--gr-erro)}
+#gr-relatorio .gr-ok{color:var(--gr-ok)}
+@media (max-width:859px){
+.gr{grid-template-columns:minmax(0,1fr);gap:20px}
+.gr-palco{order:-1;top:0;z-index:2;background:var(--gr-bg);padding:8px 0;margin:0 -16px;padding-left:16px;padding-right:16px;border-bottom:1px solid var(--gr-line)}
+.gr-quadro{padding:10px;min-height:0}
+.gr-dupla{grid-template-columns:1fr}
+}
+
+</style>
+<style>html,body{margin:0} #app > div{min-height:100vh}</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="gerador" class="gr" hidden>
+  <div class="gr-controles">
+    <fieldset class="gr-grupo">
+      <legend>Formato e texto</legend>
+      <label class="gr-campo">Formato
+        <select id="gr-formato"></select>
+      </label>
+      <label class="gr-campo"><span class="gr-rotulo"><span>Título</span><span id="gr-contador"></span></span>
+        <textarea id="gr-titulo" rows="3" placeholder="Escreva o título; ele se ajusta à área"></textarea>
+      </label>
+      <label class="gr-campo">Selo (opcional)
+        <input type="text" id="gr-selo" placeholder="Ex.: Urgente, Análise, Exemplo fictício">
+      </label>
+      <div class="gr-dupla">
+        <label class="gr-campo">Rodapé, linha em destaque
+          <input type="text" id="gr-rodape1" placeholder="Ex.: Leia a matéria completa">
+        </label>
+        <label class="gr-campo">Rodapé, segunda linha
+          <input type="text" id="gr-rodape2" placeholder="Ex.: seusite.org">
+        </label>
+      </div>
+      <label class="gr-campo">Link do QR code (opcional)
+        <input type="url" id="gr-link" placeholder="https://…" inputmode="url">
+      </label>
+    </fieldset>
+
+    <fieldset class="gr-grupo">
+      <legend>Imagem de fundo</legend>
+      <div class="gr-zona" id="gr-zona-fundo" tabindex="0" role="button" aria-label="Escolher imagem de fundo">
+        <span class="gr-vazio" id="gr-fundo-vazio" aria-hidden="true">+</span>
+        <img id="gr-fundo-mini" alt="" hidden>
+        <span id="gr-fundo-nome">Clique ou arraste uma imagem</span>
+      </div>
+      <input type="file" id="gr-arquivo-fundo" accept="image/*" hidden>
+      <div class="gr-dupla">
+        <label class="gr-campo"><span class="gr-rotulo"><span>Foco horizontal</span><span id="gr-focoX-v"></span></span>
+          <input type="range" id="gr-focoX" min="0" max="100" step="1">
+        </label>
+        <label class="gr-campo"><span class="gr-rotulo"><span>Foco vertical</span><span id="gr-focoY-v"></span></span>
+          <input type="range" id="gr-focoY" min="0" max="100" step="1">
+        </label>
+      </div>
+      <button type="button" id="gr-remover-fundo" hidden>Remover fundo</button>
+    </fieldset>
+
+    <fieldset class="gr-grupo">
+      <legend>Logos (opcional)</legend>
+      <div id="gr-logos" style="display:flex;flex-direction:column;gap:8px"></div>
+      <button type="button" id="gr-adicionar-logo">+ Adicionar logo</button>
+      <input type="file" id="gr-arquivo-logo" accept="image/*" multiple hidden>
+      <p class="gr-dica">Ficam na faixa de logos do formato e diminuem juntas se não couberem. PNG com fundo transparente funciona melhor.</p>
+    </fieldset>
+
+    <details class="gr-grupo">
+      <summary>Camadas e transparência</summary>
+      <div>
+        <div id="gr-camadas" style="display:flex;flex-direction:column;gap:8px"></div>
+        <button type="button" id="gr-restaurar">Restaurar camadas do formato</button>
+        <p class="gr-dica">Os ajustes valem só para o formato selecionado.</p>
+      </div>
+    </details>
+
+    <fieldset class="gr-grupo">
+      <legend>Baixar</legend>
+      <label class="gr-campo">Nome do arquivo (opcional)
+        <input type="text" id="gr-nome" placeholder="Automático, a partir do título">
+      </label>
+      <label class="gr-campo">Resolução
+        <select id="gr-escala">
+          <option value="1">Tamanho do formato</option>
+          <option value="2">2× (mais nítida)</option>
+        </select>
+      </label>
+      <button type="button" class="gr-principal" id="gr-baixar">Baixar PNG</button>
+      <button type="button" id="gr-baixar-todos">Baixar em todos os formatos</button>
+      <button type="button" id="gr-recomecar">Limpar tudo</button>
+      <p class="gr-dica">Os textos ficam guardados neste navegador. As imagens que você abrir não ficam: ao recarregar a página, abra-as de novo.</p>
+    </fieldset>
+  </div>
+
+  <div class="gr-palco">
+    <div class="gr-quadro" id="gr-quadro"><canvas id="gr-previa" role="img" aria-label="Prévia da imagem"></canvas></div>
+    <div class="gr-barra">
+      <span id="gr-medidas"></span>
+      <label class="gr-checar"><input type="checkbox" id="gr-guias"> Mostrar áreas demarcadas</label>
+    </div>
+    <div id="gr-relatorio" aria-live="polite"></div>
+  </div>
+</div>
+
+<template id="tpl">
+
+<div style="background: {{c.bg}}; color: {{c.ink}}; min-height: 100%; font-family: &quot;Gotham Medium&quot;, &quot;Gotham&quot;, &quot;Montserrat&quot;, Arial, sans-serif; font-weight: 500;">
+
+  <header style="background: {{c.bg}}; color: {{c.ink}}; border-bottom: 2px solid {{c.ink}};">
+    <div class="tc-header-row" style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px;">
+      <a class="tc-logo" href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" aria-label="Tempo Continuum, início">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><img src="logos/logo-claro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if><sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><img src="logos/logo-escuro.png" alt="" width="48" height="48" style="display: block; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none;"></sc-if>
+        <span style="font-size: 13px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase;">Tempo<br>Continuum</span>
+      </a>
+      <nav class="tc-nav" aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 6px 8px; flex: 1 1 560px; font-size: 15px;">
+        <a href="noticias.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Notícias</a>
+        <a href="politicos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; padding: 8px 14px; border-radius: 999px;">Cursos</a>
+        <a href="ferramentas.html" aria-current="page" style="text-decoration: none; padding: 8px 14px; border-radius: 999px; background: #8EA612; color: #060308;">Ferramentas</a>
+      </nav>
+      <a class="tc-buscar" href="noticias.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; border: 2px solid {{c.ink}}; border-radius: 999px; padding: 8px 16px; font-size: 14px; min-height: 44px; box-sizing: border-box;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      <button type="button" class="tc-tema" onClick="{{alternarTema}}" aria-label="{{temaLabel}}" style="display: flex; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: {{c.ink}}; color: {{c.bg}}; border-radius: 999px; padding: 8px 16px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{claro}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{escuro}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        <span class="tc-tema-txt">{{temaTexto}}</span>
+      </button>
+      <button type="button" class="tc-menu-btn" onClick="{{alternarMenu}}" aria-expanded="{{menuAbertoTxt}}" aria-controls="tc-painel" style="display: none; align-items: center; gap: 8px; font: inherit; font-size: 14px; border: 2px solid {{c.ink}}; background: transparent; color: {{c.ink}}; border-radius: 999px; padding: 8px 14px; min-height: 44px; box-sizing: border-box; cursor: pointer;">
+        <sc-if value="{{menuFechado}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></sc-if>
+        <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if>
+        Menu
+      </button>
+    </div>
+    <sc-if value="{{menuAberto}}" hint-placeholder-val="{{false}}">
+      <nav id="tc-painel" class="tc-painel" aria-label="Menu" style="display: none; border-top: 1px solid {{c.line}}; padding: 4px 16px 12px;">
+        <a href="index.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Início</a>
+        <a href="noticias.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Notícias</a>
+        <a href="politicos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Políticos</a>
+        <a href="casos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Casos</a>
+        <a href="documentarios.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Documentários</a>
+        <a href="dossies.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Dossiês</a>
+        <a href="cursos.html" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}};">Cursos</a>
+        <a href="ferramentas.html" aria-current="page" style="text-decoration: none; display: block; padding: 14px 12px; font-size: 18px; border-bottom: 1px solid {{c.line}}; background: #8EA612; color: #060308;">Ferramentas</a>
+        <a href="noticias.html" onClick="{{fecharMenu}}" style="text-decoration: none; display: flex; align-items: center; gap: 10px; padding: 14px 12px; font-size: 18px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Buscar</a>
+      </nav>
+    </sc-if>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px;">
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / <a href="ferramentas.html" style="text-underline-offset: 3px;">Ferramentas</a> / Gerador de imagens</p>
+      <h1 style="margin: 0; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -0.02em;"><span style="background: #8EA612; color: #060308; padding: 0 10px;">Gerador de imagens</span></h1>
+      <p style="margin: 0; font-size: 1.1rem; line-height: 1.55; color: {{c.muted}}; max-width: 62ch;">Monte imagens para redes sociais e prévias de link. O título se ajusta sozinho à área, e você pode usar sua foto de fundo, suas logos, camadas com transparência e um QR code. Tudo é feito no seu navegador: nenhuma imagem é enviada ao site.</p>
+    </div>
+    <div id="gerador-lugar"></div>
+    <p style="margin: 0; font-size: 13px; line-height: 1.55; color: {{c.muted}}; max-width: 72ch; border-top: 1px solid {{c.line}}; padding-top: 16px;">As imagens feitas aqui são de responsabilidade de quem as cria e não são publicações do Tempo Continuum. Use fotos e logos que você tem direito de usar. O QR code usa a biblioteca qrcode-generator, de Kazuhiko Arase (licença MIT). "QR Code" é marca registrada da DENSO WAVE.</p>
+  </main>
+
+
+  <footer style="background: #060308; color: #F2EEE9; border-top: 1px solid {{c.line}};">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 48px 24px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Tempo Continuum</p>
+        <p style="margin: 0; font-size: 1.4rem; line-height: 1.25; max-width: 24ch;"><span style="background: #8EA612; color: #060308; padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Conhecer o passado. Organizar o presente. Construir o futuro.</span></p>
+      </div>
+      <nav aria-label="Rodapé" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 40px; font-size: 14px; align-content: start;">
+        <a href="noticias.html" style="text-decoration: none;">Notícias</a>
+        <a href="dossies.html" style="text-decoration: none;">Dossiês</a>
+        <a href="politicos.html" style="text-decoration: none;">Políticos</a>
+        <a href="cursos.html" style="text-decoration: none;">Cursos</a>
+        <a href="casos.html" style="text-decoration: none;">Casos</a>
+        <a href="index.html" style="text-decoration: none;">Início</a>
+        <a href="documentarios.html" style="text-decoration: none;">Documentários</a>
+        <a href="ferramentas.html" style="text-decoration: none;">Ferramentas</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</template>
+<script src="js/runtime.js"></script>
+<script src="js/vendor/qrcode-generator.js"></script>
+<script src="js/gerador-imagens.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { escuro: null };
+  }
+  componentDidMount() {
+    try {
+      var v = window.localStorage.getItem('tc-tema');
+      if (v === 'escuro' || v === 'claro') this.setState({ escuro: v === 'escuro' });
+    } catch (e) {}
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var escuro = (st.escuro !== null && st.escuro !== undefined) ? st.escuro : (this.props.tema ?? 'claro') === 'escuro';
+    var c = escuro
+      ? { bg: '#060308', surface: '#302D29', ink: '#F2EEE9', muted: '#DED5CA', line: 'rgba(222, 213, 202, 0.3)' }
+      : { bg: '#F2EEE9', surface: '#DED5CA', ink: '#060308', muted: '#302D29', line: 'rgba(48, 45, 41, 0.28)' };
+    document.documentElement.setAttribute('data-tema', escuro ? 'escuro' : 'claro');
+    return {
+      menuAberto: !!st.menuAberto,
+      menuFechado: !st.menuAberto,
+      menuAbertoTxt: st.menuAberto ? 'true' : 'false',
+      alternarMenu: function () { self.setState({ menuAberto: !(self.state && self.state.menuAberto) }); },
+      fecharMenu: function () { self.setState({ menuAberto: false }); },
+      c: c, escuro: escuro, claro: !escuro,
+      temaTexto: escuro ? 'Claro' : 'Escuro',
+      temaLabel: escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro',
+      alternarTema: function () {
+        var novo = !escuro;
+        self.setState({ escuro: novo });
+        try { window.localStorage.setItem('tc-tema', novo ? 'escuro' : 'claro'); } catch (e) {}
+      }
+    };
+  }
+}
+iniciarPagina(Component, {"tema": "claro"});
+// O motor da página redesenha o #app ao trocar o tema ou abrir o menu.
+// A ferramenta fica fora dele e é recolocada no lugar a cada redesenho, sem perder o que foi digitado.
+(function () {
+  var g = document.getElementById('gerador'), app = document.getElementById('app');
+  function fixar() {
+    var lugar = document.getElementById('gerador-lugar');
+    if (lugar && g.parentNode !== lugar) {
+      lugar.appendChild(g);
+      g.hidden = false;
+      if (window.__gerador) window.__gerador.agendar();
+    }
+  }
+  fixar();
+  new MutationObserver(fixar).observe(app, { childList: true });
+})();
+
+</script>
+</body>
+</html>

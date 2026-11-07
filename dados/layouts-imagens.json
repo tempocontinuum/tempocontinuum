@@ -1,0 +1,71 @@
+{
+  "comentario": "Formatos do Gerador de imagens (gerador-de-imagens.html). Medidas em pixels; x e y são o canto superior esquerdo de cada área.",
+  "layouts": [
+    {
+      "nome": "post-retrato",
+      "rotulo": "Post retrato (Instagram)",
+      "largura": 1080, "altura": 1350, "cor_fundo": "#060308",
+      "camadas": [
+        { "tipo": "gradiente", "x": 0, "y": 0, "largura": 1080, "altura": 300, "cor": "#060308", "alpha": 0.75, "cor2": "#060308", "alpha2": 0, "direcao": "para baixo" },
+        { "tipo": "gradiente", "x": 0, "y": 380, "largura": 1080, "altura": 970, "cor": "#060308", "alpha": 0, "cor2": "#060308", "alpha2": 0.95, "direcao": "para baixo" },
+        { "tipo": "cor", "x": 0, "y": 1166, "largura": 1080, "altura": 184, "cor": "#302D29", "alpha": 0.55, "desfoque": 14 },
+        { "tipo": "cor", "x": 0, "y": 1166, "largura": 1080, "altura": 3, "cor": "#8EA612", "alpha": 0.9 },
+        { "tipo": "cor", "x": 72, "y": 1120, "largura": 96, "altura": 8, "cor": "#8EA612", "alpha": 1 }
+      ],
+      "selo": { "x": 72, "y": 76, "altura": 54, "fonte": 22, "espaco_letras": 2, "cor": "#060308", "cor_fundo": "#8EA612", "alpha_fundo": 1, "margem": 22 },
+      "logos": { "x": 470, "y": 64, "largura": 538, "altura": 78, "espaco": 28, "alinhar": "direita" },
+      "titulo": { "x": 72, "y": 580, "largura": 936, "altura": 510, "fonte_max": 116, "fonte_min": 44, "entrelinha": 1.04, "cor": "#F2EEE9", "alinhar": "esquerda", "vertical": "base", "max_linhas": 6 },
+      "rodape": { "x": 72, "y": 1206, "largura": 740, "altura": 104, "fonte": 28, "entrelinha": 1.35, "cor": "#F2EEE9", "cor_destaque": "#8EA612" },
+      "qr": { "x": 856, "y": 1182, "tamanho": 152, "margem": 12, "raio": 10, "cor": "#060308", "cor_fundo": "#F2EEE9", "alpha_fundo": 1 }
+    },
+    {
+      "nome": "quadrado",
+      "rotulo": "Post quadrado",
+      "largura": 1080, "altura": 1080, "cor_fundo": "#060308",
+      "camadas": [
+        { "tipo": "gradiente", "x": 0, "y": 0, "largura": 1080, "altura": 260, "cor": "#060308", "alpha": 0.7, "cor2": "#060308", "alpha2": 0, "direcao": "para baixo" },
+        { "tipo": "gradiente", "x": 0, "y": 280, "largura": 1080, "altura": 800, "cor": "#060308", "alpha": 0, "cor2": "#060308", "alpha2": 0.95, "direcao": "para baixo" },
+        { "tipo": "cor", "x": 0, "y": 928, "largura": 1080, "altura": 152, "cor": "#302D29", "alpha": 0.55, "desfoque": 14 },
+        { "tipo": "cor", "x": 0, "y": 928, "largura": 1080, "altura": 3, "cor": "#8EA612", "alpha": 0.9 },
+        { "tipo": "cor", "x": 72, "y": 884, "largura": 96, "altura": 8, "cor": "#8EA612", "alpha": 1 }
+      ],
+      "selo": { "x": 72, "y": 72, "altura": 52, "fonte": 21, "espaco_letras": 2, "cor": "#060308", "cor_fundo": "#8EA612", "alpha_fundo": 1, "margem": 20 },
+      "logos": { "x": 470, "y": 62, "largura": 538, "altura": 72, "espaco": 26, "alinhar": "direita" },
+      "titulo": { "x": 72, "y": 420, "largura": 936, "altura": 440, "fonte_max": 104, "fonte_min": 40, "entrelinha": 1.04, "cor": "#F2EEE9", "alinhar": "esquerda", "vertical": "base", "max_linhas": 5 },
+      "rodape": { "x": 72, "y": 960, "largura": 760, "altura": 92, "fonte": 27, "entrelinha": 1.35, "cor": "#F2EEE9", "cor_destaque": "#8EA612" },
+      "qr": { "x": 884, "y": 944, "tamanho": 124, "margem": 10, "raio": 8, "cor": "#060308", "cor_fundo": "#F2EEE9", "alpha_fundo": 1 }
+    },
+    {
+      "nome": "story",
+      "rotulo": "Story (vertical)",
+      "largura": 1080, "altura": 1920, "cor_fundo": "#060308",
+      "camadas": [
+        { "tipo": "gradiente", "x": 0, "y": 0, "largura": 1080, "altura": 440, "cor": "#060308", "alpha": 0.75, "cor2": "#060308", "alpha2": 0, "direcao": "para baixo" },
+        { "tipo": "gradiente", "x": 0, "y": 640, "largura": 1080, "altura": 1280, "cor": "#060308", "alpha": 0, "cor2": "#060308", "alpha2": 0.95, "direcao": "para baixo" },
+        { "tipo": "cor", "x": 0, "y": 1640, "largura": 1080, "altura": 280, "cor": "#302D29", "alpha": 0.55, "desfoque": 16 },
+        { "tipo": "cor", "x": 0, "y": 1640, "largura": 1080, "altura": 3, "cor": "#8EA612", "alpha": 0.9 },
+        { "tipo": "cor", "x": 72, "y": 1588, "largura": 120, "altura": 10, "cor": "#8EA612", "alpha": 1 }
+      ],
+      "selo": { "x": 72, "y": 150, "altura": 60, "fonte": 25, "espaco_letras": 2, "cor": "#060308", "cor_fundo": "#8EA612", "alpha_fundo": 1, "margem": 26 },
+      "logos": { "x": 470, "y": 138, "largura": 538, "altura": 84, "espaco": 28, "alinhar": "direita" },
+      "titulo": { "x": 72, "y": 880, "largura": 936, "altura": 680, "fonte_max": 136, "fonte_min": 52, "entrelinha": 1.04, "cor": "#F2EEE9", "alinhar": "esquerda", "vertical": "base", "max_linhas": 9 },
+      "rodape": { "x": 72, "y": 1700, "largura": 700, "altura": 160, "fonte": 34, "entrelinha": 1.35, "cor": "#F2EEE9", "cor_destaque": "#8EA612" },
+      "qr": { "x": 828, "y": 1690, "tamanho": 180, "margem": 14, "raio": 12, "cor": "#060308", "cor_fundo": "#F2EEE9", "alpha_fundo": 1 }
+    },
+    {
+      "nome": "compartilhamento",
+      "rotulo": "Prévia de link (1200×630)",
+      "largura": 1200, "altura": 630, "cor_fundo": "#060308",
+      "camadas": [
+        { "tipo": "cor", "x": 0, "y": 0, "largura": 720, "altura": 630, "cor": "#060308", "alpha": 0.84 },
+        { "tipo": "gradiente", "x": 720, "y": 0, "largura": 260, "altura": 630, "cor": "#060308", "alpha": 0.84, "cor2": "#060308", "alpha2": 0, "direcao": "para direita" },
+        { "tipo": "cor", "x": 0, "y": 0, "largura": 10, "altura": 630, "cor": "#8EA612", "alpha": 1 },
+        { "tipo": "cor", "x": 1036, "y": 466, "largura": 140, "altura": 140, "cor": "#060308", "alpha": 0.35, "raio": 14, "desfoque": 8 }
+      ],
+      "selo": { "x": 56, "y": 48, "altura": 44, "fonte": 18, "espaco_letras": 2, "cor": "#060308", "cor_fundo": "#8EA612", "alpha_fundo": 1, "margem": 18 },
+      "logos": { "x": 56, "y": 536, "largura": 560, "altura": 52, "espaco": 24, "alinhar": "esquerda" },
+      "titulo": { "x": 56, "y": 124, "largura": 620, "altura": 380, "fonte_max": 84, "fonte_min": 32, "entrelinha": 1.05, "cor": "#F2EEE9", "alinhar": "esquerda", "vertical": "centro", "max_linhas": 7 },
+      "qr": { "x": 1046, "y": 476, "tamanho": 120, "margem": 8, "raio": 8, "cor": "#060308", "cor_fundo": "#F2EEE9", "alpha_fundo": 1 }
+    }
+  ]
+}
