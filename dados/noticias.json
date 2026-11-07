@@ -1,130 +1,17 @@
 [
  {
-  "id": "2026-10-28-motoristas-de-aplicativo-de-santa-aurora-param-por-48-horas",
-  "titulo": "Motoristas de aplicativo de Santa Aurora param por 48 horas",
-  "linha": "A categoria reivindica tarifa mínima por corrida e explicação para os bloqueios de conta.",
-  "data": "2026-10-28T09:00:00-03:00",
-  "editoria": "Trabalho",
+  "id": "2026-11-06-esse-e-um-teste-para-ver-se-o-sistema-esta-funcionando",
+  "titulo": "Esse é um teste para ver se o sistema está funcionando",
+  "linha": "Afrente Movimento Fome de Futuro!",
+  "data": "2026-11-05T22:24:00",
+  "editoria": "Internacional",
   "tags": [
-   "trabalho",
-   "greve",
-   "plataformas"
+   "67",
+   "tuff",
+   "Aura"
   ],
   "autor": "Redação",
-  "foto": "",
-  "destaque": true,
-  "ficticio": true
- },
- {
-  "id": "2026-10-24-assentamento-terra-viva-colhe-a-primeira-safra-de-arroz-agro",
-  "titulo": "Assentamento Terra Viva colhe a primeira safra de arroz agroecológico",
-  "linha": "Depois de três anos de disputa judicial, as famílias vendem a produção em uma feira própria.",
-  "data": "2026-10-24T09:00:00-03:00",
-  "editoria": "Campo",
-  "tags": [
-   "reforma agrária",
-   "agroecologia",
-   "campo"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-10-21-professores-da-rede-municipal-de-porto-serrano-aprovam-estad",
-  "titulo": "Professores da rede municipal de Porto Serrano aprovam estado de greve",
-  "linha": "A assembleia pede reposição salarial e concurso para substituir os contratos temporários.",
-  "data": "2026-10-21T09:00:00-03:00",
-  "editoria": "Educação",
-  "tags": [
-   "trabalho",
-   "educação",
-   "greve"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-10-15-arquivo-de-vale-bonito-digitaliza-fichas-de-vigilancia-da-di",
-  "titulo": "Arquivo de Vale Bonito digitaliza fichas de vigilância da ditadura",
-  "linha": "O acervo ficará aberto à consulta pública a partir de dezembro.",
-  "data": "2026-10-15T09:00:00-03:00",
-  "editoria": "Memória",
-  "tags": [
-   "história do Brasil",
-   "ditadura",
-   "memória"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-10-09-camara-de-santa-aurora-debate-tarifa-zero-no-transporte-cole",
-  "titulo": "Câmara de Santa Aurora debate tarifa zero no transporte coletivo",
-  "linha": "O projeto prevê financiamento por uma taxa cobrada de grandes empregadores.",
-  "data": "2026-10-09T09:00:00-03:00",
-  "editoria": "Cidades",
-  "tags": [
-   "transporte",
-   "cidades",
-   "orçamento público"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-10-02-metalurgica-rio-claro-do-norte-anuncia-fechamento-de-unidade",
-  "titulo": "Metalúrgica Rio Claro do Norte anuncia fechamento de unidade",
-  "linha": "O sindicato tenta negociar a manutenção dos postos de trabalho.",
-  "data": "2026-10-02T09:00:00-03:00",
-  "editoria": "Trabalho",
-  "tags": [
-   "trabalho",
-   "indústria",
-   "sindicatos"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-09-26-grupo-de-estudos-reune-operarios-para-ler-o-capital",
-  "titulo": "Grupo de estudos reúne operários para ler O Capital",
-  "linha": "Os encontros semanais acontecem na sede do sindicato dos metalúrgicos de Porto Serrano.",
-  "data": "2026-09-26T09:00:00-03:00",
-  "editoria": "Formação",
-  "tags": [
-   "marxismo",
-   "formação",
-   "sindicatos"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
- },
- {
-  "id": "2026-09-18-enchente-deixa-familias-desalojadas-na-periferia-de-vale-bon",
-  "titulo": "Enchente deixa famílias desalojadas na periferia de Vale Bonito",
-  "linha": "Movimentos de moradia cobram um plano de reassentamento da prefeitura.",
-  "data": "2026-09-18T09:00:00-03:00",
-  "editoria": "Cidades",
-  "tags": [
-   "moradia",
-   "cidades",
-   "meio ambiente"
-  ],
-  "autor": "Redação",
-  "foto": "",
-  "destaque": false,
-  "ficticio": true
+  "foto": "imagens/materias/Captura de tela 2026-10-06 150817.png",
+  "destaque": true
  }
 ]

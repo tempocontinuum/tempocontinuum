@@ -96,7 +96,6 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
             <span style="background: #8EA612; color: #060308; padding: 3px 10px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px;">{{m.editoria}}</span>
             <span>{{m.dataTexto}}</span>
             <sc-if value="{{m.temAutor}}" hint-placeholder-val="{{true}}"><span>· {{m.autor}}</span></sc-if>
-            <sc-if value="{{m.ficticio}}" hint-placeholder-val="{{false}}"><span style="border: 1px dashed {{c.muted}}; padding: 1px 6px;">Exemplo fictício</span></sc-if>
           </div>
           <h1 style="margin: 0; font-size: clamp(2rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance;">{{m.titulo}}</h1>
           <sc-if value="{{m.temLinha}}" hint-placeholder-val="{{true}}"><p style="margin: 0; font-size: 1.2rem; line-height: 1.5; color: {{c.muted}};">{{m.linha}}</p></sc-if>
@@ -153,13 +152,13 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { escuro: null, menuAberto: false, materia: null, status: 'carregando' };
   }
-  exemplo() { return {"titulo": "Motoristas de aplicativo de Santa Aurora param por 48 horas", "linha": "A categoria reivindica tarifa mínima por corrida e explicação para os bloqueios de conta.", "data": "2026-10-28T09:00:00-03:00", "editoria": "Trabalho", "tags": ["trabalho", "greve", "plataformas"], "autor": "Redação", "foto": "", "legenda": "", "credito": "", "destaque": true, "ficticio": true, "corpo": "Motoristas de aplicativo de Santa Aurora desligaram os aplicativos na manhã de segunda-feira e prometem manter a paralisação por 48 horas.\n\n## O que a categoria pede\n\nA principal reivindicação é uma **tarifa mínima por corrida**, que hoje varia conforme o horário e a demanda. Os motoristas também cobram explicação para os bloqueios de conta, que acontecem sem aviso.\n\n> Ninguém sabe por que foi bloqueado. A gente fica sem renda de um dia para o outro.\n\n## Próximos passos\n\n- Assembleia na quarta-feira para avaliar a paralisação\n- Pedido de audiência com a Câmara Municipal\n\n*Texto de exemplo, fictício, criado só para demonstrar o site. Os lugares, as empresas e as pessoas citados não existem.*", "id": "2026-10-28-motoristas-de-aplicativo-de-santa-aurora-param-por-48-horas"}; }
   componentDidMount() {
     var self = this;
     try {
@@ -168,7 +167,7 @@ class Component extends DCLogic {
     } catch (e) {}
     var id = '';
     try { id = new URLSearchParams(window.location.search).get('id') || ''; } catch (e) {}
-    if (!id) { this.setState({ materia: this.exemplo(), status: 'ok' }); return; }
+    if (!id) { this.setState({ status: 'erro' }); return; }
     if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) { this.setState({ status: 'erro' }); return; }
     fetch('conteudo/noticias/' + id + '.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -230,11 +229,11 @@ class Component extends DCLogic {
     var rel = function (u) { u = String(u || '').trim(); return /^https?:/i.test(u) ? u : u.replace(/^\/+/, '').replace(/^tempocontinuum\//, ''); };
     var m = mat ? {
       titulo: mat.titulo || '', linha: mat.linha || '', temLinha: !!mat.linha, editoria: mat.editoria || 'Notícia',
-      dataTexto: fmt(mat.data), autor: mat.autor || '', temAutor: !!mat.autor, ficticio: !!mat.ficticio,
+      dataTexto: fmt(mat.data), autor: mat.autor || '', temAutor: !!mat.autor,
       foto: rel(mat.foto), temFoto: !!mat.foto, legenda: mat.legenda || '', credito: mat.credito || '', temCredito: !!mat.credito
     } : {};
     var tags = (mat && mat.tags || []).map(function (t) {
-      return { nome: t, ir: function () { try { window.localStorage.setItem('tc-busca-tag', t); } catch (e) {} } };
+      return { nome: window.TCTags.rotulo(t), ir: function () { try { window.localStorage.setItem('tc-busca-tag', window.TCTags.canon(t)); } catch (e) {} } };
     });
     return {
       menuAberto: !!st.menuAberto,

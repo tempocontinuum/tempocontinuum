@@ -56,7 +56,7 @@ collections:
       - name: titulo
         label: Título
         widget: string
-        hint: 'Uma ou duas linhas, direto ao fato. Ex.: "Professores de Porto Serrano aprovam estado de greve".'
+        hint: 'Uma ou duas linhas, direto ao fato. Ex.: "Professores da rede municipal aprovam estado de greve".'
         maxlength: 140
       - name: linha
         label: Linha fina
@@ -74,7 +74,7 @@ collections:
       - name: tags
         label: Tags
         widget: list
-        hint: 'Palavras pelas quais a matéria será encontrada na busca. Uma por item, em minúsculas. Reaproveite as tags que já existem.'
+        hint: 'Palavras pelas quais a matéria será encontrada na busca. Uma por item, em minúsculas. Reaproveite as tags que já existem. Para uma subtag, use barra: violência/contra indígenas (a tag é violência e a subtag é contra indígenas).'
         min: 1
         max: 8
       - name: autor
@@ -101,11 +101,6 @@ collections:
         widget: boolean
         default: false
         hint: 'Ligue para esta matéria ser a manchete principal da Home. Se várias estiverem ligadas, vale a mais recente.'
-      - name: ficticio
-        label: Exemplo fictício
-        widget: boolean
-        default: false
-        hint: 'Só para matérias de demonstração. Mostra o selo "Exemplo fictício" no site.'
       - name: corpo
         label: Texto
         widget: markdown

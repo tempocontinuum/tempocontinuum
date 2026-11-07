@@ -79,7 +79,6 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
       <p style="margin: 0; font-size: 13px; color: {{c.muted}};"><a href="index.html" style="text-underline-offset: 3px;">Início</a> / Casos</p>
       <h1 style="margin: 0; font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -0.02em;"><span style="background: #8EA612; color: #060308; padding: 0 10px;">Casos</span></h1>
       <p style="margin: 0; font-size: 1.1rem; line-height: 1.55; color: {{c.muted}}; max-width: 60ch;">Investigações acompanhadas do início ao fim, com a situação atual, os envolvidos, a última etapa e os documentos reunidos.</p>
-      <p style="margin: 0; align-self: flex-start; font-size: 13px; border: 1.5px dashed {{c.muted}}; padding: 8px 12px; color: {{c.muted}};">Os casos abaixo são fictícios e servem só para demonstrar o site. Lugares, empresas e órgãos foram inventados.</p>
     </div>
 
     <section aria-label="Filtros" style="display: flex; flex-direction: column; gap: 16px; border-top: 2px solid {{c.ink}}; border-bottom: 1px solid {{c.line}}; padding: 20px 0;">
@@ -123,8 +122,8 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 
     <sc-if value="{{vazio}}" hint-placeholder-val="{{false}}">
       <div style="border: 1.5px dashed {{c.line}}; padding: 28px 24px; display: flex; flex-direction: column; gap: 6px;">
-        <strong style="font-size: 1.2rem; font-weight: 500;">Nenhum caso com esses filtros</strong>
-        <span style="color: {{c.muted}};">Escolha outra situação, desmarque uma tag ou use menos palavras na busca.</span>
+        <strong style="font-size: 1.2rem; font-weight: 500;">{{vazioTitulo}}</strong>
+        <span style="color: {{c.muted}};">{{vazioTexto}}</span>
       </div>
     </sc-if>
 
@@ -136,7 +135,6 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
             <sc-if value="{{k.julgamento}}" hint-placeholder-val="{{false}}"><span style="display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; background: #8EA612; color: #060308; border: 1.5px solid #8EA612; padding: 5px 10px; text-align: center;">Em julgamento</span></sc-if>
             <sc-if value="{{k.encerrado}}" hint-placeholder-val="{{false}}"><span style="display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; border: 1.5px dashed {{c.muted}}; color: {{c.muted}}; padding: 5px 10px; text-align: center;">Encerrado</span></sc-if>
             <span style="font-size: 12px; color: {{c.muted}};">Aberto em {{k.abertoTexto}}</span>
-            <span style="font-size: 12px; border: 1px dashed {{c.muted}}; color: {{c.muted}}; padding: 1px 6px; align-self: flex-start;">Exemplo fictício</span>
           </div>
           <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 10px;">
             <h2 style="margin: 0; font-size: 1.35rem; line-height: 1.2;">{{k.titulo}}</h2>
@@ -183,6 +181,7 @@ footer>div{padding-left:16px !important;padding-right:16px !important}
 </div>
 </template>
 <script src="js/runtime.js"></script>
+<script src="js/tags.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -196,14 +195,7 @@ class Component extends DCLogic {
     } catch (e) {}
   }
   dados() {
-    return [
-      { id: 'c1', status: 'Em andamento', titulo: 'Contrato da merenda escolar de Santa Aurora', resumo: 'A empresa contratada sem licitação teria entregue alimentos abaixo do especificado no contrato.', aberto: '2026-03-12', atualizado: '2026-10-27', etapa: 'Ministério Público abriu inquérito civil', envolvidos: ['Prefeitura de Santa Aurora', 'Nutrir Alimentos Ltda.'], docs: 14, tags: ['educação', 'licitação', 'orçamento público'] },
-      { id: 'c2', status: 'Em julgamento', titulo: 'Despejo da Ocupação Vila Esperança', resumo: 'Famílias que vivem em uma área pública ociosa enfrentam uma ordem de reintegração de posse.', aberto: '2025-11-03', atualizado: '2026-10-30', etapa: 'Recurso aguarda julgamento no Tribunal de Justiça', envolvidos: ['Ocupação Vila Esperança', 'Governo do Estado'], docs: 22, tags: ['moradia', 'cidades', 'despejo'] },
-      { id: 'c3', status: 'Em andamento', titulo: 'Demissões na Metalúrgica Rio Claro do Norte', resumo: 'A empresa anunciou o fechamento de uma unidade sem negociação prévia com o sindicato.', aberto: '2026-10-02', atualizado: '2026-10-29', etapa: 'Audiência de mediação marcada', envolvidos: ['Metalúrgica Rio Claro do Norte', 'Sindicato dos Metalúrgicos'], docs: 6, tags: ['trabalho', 'sindicatos', 'indústria'] },
-      { id: 'c4', status: 'Em julgamento', titulo: 'Fundo de transporte de Porto Serrano', resumo: 'Uma auditoria apontou repasses a uma empresa de ônibus sem comprovação dos quilômetros rodados.', aberto: '2025-06-20', atualizado: '2026-09-15', etapa: 'Ação de improbidade em fase de instrução', envolvidos: ['Prefeitura de Porto Serrano', 'Viação Litoral'], docs: 31, tags: ['transporte', 'orçamento público', 'licitação'] },
-      { id: 'c5', status: 'Encerrado', titulo: 'Contaminação do Rio Taquaraçu', resumo: 'Moradores relataram mortandade de peixes depois de um vazamento em um curtume.', aberto: '2025-02-08', atualizado: '2026-07-01', etapa: 'Acordo de reparação homologado', envolvidos: ['Curtume Taquaraçu', 'Comunidade ribeirinha'], docs: 18, tags: ['meio ambiente', 'campo'] },
-      { id: 'c6', status: 'Encerrado', titulo: 'Fichas de vigilância do Arquivo de Vale Bonito', resumo: 'O pedido de acesso a documentos da ditadura foi negado e depois liberado após recurso.', aberto: '2025-09-10', atualizado: '2026-05-20', etapa: 'Documentos liberados para consulta', envolvidos: ['Arquivo Municipal de Vale Bonito', 'Comissão da Memória'], docs: 9, tags: ['história do Brasil', 'ditadura', 'memória'] }
-    ];
+    return [];
   }
   renderVals() {
     var self = this;
@@ -216,13 +208,14 @@ class Component extends DCLogic {
     var meses = ['jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
     var fmt = function (iso) { var p = iso.split('-'); return Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0]; };
     var sel = st.tags || [];
-    var selN = sel.map(norm);
+    var T = window.TCTags;
+    var selN = sel.map(function (x) { return norm(T.canon(x)); });
     var situacao = st.situacao || 'Todos';
     var toggle = function (nome) {
       return function () {
-        var k = norm(nome);
+        var k = norm(T.canon(nome));
         var atual = (self.state.tags || []).slice();
-        var i = atual.map(norm).indexOf(k);
+        var i = atual.map(function (x) { return norm(T.canon(x)); }).indexOf(k);
         if (i >= 0) atual.splice(i, 1); else atual.push(nome);
         self.setState({ tags: atual });
       };
@@ -230,9 +223,8 @@ class Component extends DCLogic {
     var dados = this.dados().slice().sort(function (a, b) { return a.atualizado < b.atualizado ? 1 : -1; });
     var palavras = norm(st.q).split(/\s+/).filter(Boolean);
     var passaTextoETags = function (k) {
-      var chaves = k.tags.map(norm);
-      if (!selN.every(function (x) { return chaves.indexOf(x) >= 0; })) return false;
-      var texto = norm([k.titulo, k.resumo, k.etapa, k.envolvidos.join(' '), k.tags.join(' ')].join(' '));
+      if (!T.passa(k.tags, sel)) return false;
+      var texto = norm([k.titulo, k.resumo, k.etapa, k.envolvidos.join(' '), k.tags.map(T.rotulo).join(' ')].join(' '));
       return palavras.every(function (w) { return texto.indexOf(w) >= 0; });
     };
     var base = dados.filter(passaTextoETags);
@@ -242,23 +234,21 @@ class Component extends DCLogic {
       var ativa = s === situacao;
       return { nome: s, n: n, ativa: ativa, inativa: !ativa, escolher: function () { self.setState({ situacao: s }); } };
     });
-    var contas = {};
-    dados.forEach(function (k) { k.tags.forEach(function (t) { contas[t] = (contas[t] || 0) + 1; }); });
-    var todasTags = Object.keys(contas).sort(function (a, b) { return contas[b] - contas[a] || a.localeCompare(b, 'pt'); }).map(function (t) {
-      var ativa = selN.indexOf(norm(t)) >= 0;
-      return { nome: t, n: contas[t], ativa: ativa, inativa: !ativa, toggle: toggle(t) };
+    var todasTags = T.contar(dados.map(function (k) { return k.tags; })).map(function (x) {
+      var ativa = selN.indexOf(norm(x.tag)) >= 0;
+      return { nome: x.rotulo, n: x.n, sub: x.sub, ativa: ativa, inativa: !ativa, toggle: toggle(x.tag) };
     });
     var itens = filtrados.map(function (k) {
       return {
         id: k.id, titulo: k.titulo, resumo: k.resumo, etapa: k.etapa, docs: k.docs,
         andamento: k.status === 'Em andamento', julgamento: k.status === 'Em julgamento', encerrado: k.status === 'Encerrado',
         abertoTexto: fmt(k.aberto), atualizadoTexto: fmt(k.atualizado), envolvidosTexto: k.envolvidos.join(' · '),
-        tags: k.tags.map(function (t) { var a = selN.indexOf(norm(t)) >= 0; return { nome: t, ativa: a, inativa: !a, toggle: toggle(t) }; })
+        tags: k.tags.map(function (t) { var a = selN.indexOf(norm(T.canon(t))) >= 0; return { nome: T.rotulo(t), ativa: a, inativa: !a, toggle: toggle(t) }; })
       };
     });
     var temFiltros = !!(palavras.length || sel.length || situacao !== 'Todos');
     var contagem = temFiltros
-      ? itens.length + ' de ' + dados.length + ' casos' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.join(' + ') : '')
+      ? itens.length + ' de ' + dados.length + ' casos' + (sel.length ? ' com ' + (sel.length === 1 ? 'a tag ' : 'as tags ') + sel.map(T.rotulo).join(' + ') : '')
       : dados.length + ' casos';
     return {
       menuAberto: !!(this.state && this.state.menuAberto),
@@ -278,7 +268,9 @@ class Component extends DCLogic {
       onQ: function (e) { self.setState({ q: e.target.value }); },
       limpar: function () { self.setState({ q: '', tags: [], situacao: 'Todos' }); },
       situacoes: situacoes, todasTags: todasTags, itens: itens,
-      vazio: itens.length === 0, temFiltros: temFiltros, contagem: contagem
+      vazio: itens.length === 0, temFiltros: temFiltros, contagem: contagem,
+      vazioTitulo: dados.length ? 'Nenhum caso com esses filtros' : 'Nenhum caso publicado ainda',
+      vazioTexto: dados.length ? 'Escolha outra situação, desmarque uma tag ou use menos palavras na busca.' : 'Os casos acompanhados pelo Tempo Continuum vão aparecer aqui.'
     };
   }
 }

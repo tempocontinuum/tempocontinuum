@@ -18,7 +18,7 @@ SAIDA = RAIZ / "dados" / "noticias.json"
 PASTA_POLITICOS = RAIZ / "conteudo" / "politicos"
 SAIDA_POLITICOS = RAIZ / "dados" / "politicos.json"
 CAMPOS_POLITICOS = ("nome", "iniciais", "foto", "categoria", "cargo_curto", "partido", "uf", "chamada")
-CAMPOS = ("titulo", "linha", "data", "editoria", "tags", "autor", "foto", "destaque", "ficticio")
+CAMPOS = ("titulo", "linha", "data", "editoria", "tags", "autor", "foto", "destaque")
 
 
 def caminho_relativo(foto):
@@ -46,7 +46,6 @@ def main():
         item["tags"] = [str(t).strip() for t in (item["tags"] or []) if str(t).strip()]
         item["foto"] = caminho_relativo(item["foto"])
         item["destaque"] = bool(item["destaque"])
-        item["ficticio"] = bool(item["ficticio"])
         materias.append(item)
 
     materias.sort(key=lambda m: str(m["data"]), reverse=True)
